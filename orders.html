@@ -1,0 +1,1259 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My Orders - AeroMart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e8ba3 50%, #b8c5d1 75%, #e8f0f8 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(55, 232, 235, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ensure logo size matches index.html */
+    .logo {
+      width: 100px !important;
+      height: 100px !important;
+    }
+
+    .logo img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+    }
+
+    /* AeroMart brand label - consistent with index.html */
+    .brand>div>div {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 16px !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Footer styling - matching seller.html */
+    .footer {
+      background: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer .container {
+      text-align: center;
+      padding: 0;
+    }
+
+    .footer .muted,
+    .footer .small {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-size: 16px !important;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Ensure buyer profile and My Orders are fully visible */
+    .user-menu {
+      min-width: 180px !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+    }
+
+    .user-info {
+      min-width: 120px !important;
+      flex: 1 !important;
+      width: auto !important;
+      overflow: visible !important;
+    }
+
+    .user-name {
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .user-role {
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .my-orders-link {
+      white-space: nowrap !important;
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+    }
+
+    .orders-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    .orders-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .orders-header h1 {
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .orders-header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .order-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      margin-bottom: 24px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .order-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .order-info {
+      flex: 1;
+    }
+
+    .order-id {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0 0 8px 0;
+    }
+
+    .order-date {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0 0 4px 0;
+    }
+
+    .tracking-number {
+      font-size: 14px;
+      color: #2a5298;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .order-status {
+      text-align: right;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-processing {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-shipped {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-out-for-delivery {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .status-delivered {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .estimated-delivery {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .order-items {
+      margin-bottom: 20px;
+    }
+
+    .order-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid #e5e7eb;
+    }
+
+    .order-item-details {
+      flex: 1;
+    }
+
+    .order-item-title {
+      font-weight: 600;
+      color: #1e3c72;
+      font-size: 16px;
+      margin: 0 0 4px 0;
+    }
+
+    .order-item-meta {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0 0 8px 0;
+    }
+
+    .order-item-price {
+      font-weight: 700;
+      color: #1e3c72;
+      font-size: 18px;
+    }
+
+    .order-totals {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 16px;
+      margin-top: 16px;
+      border-top: 2px solid #e5e7eb;
+    }
+
+    .total-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+    }
+
+    .total-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1e3c72;
+    }
+
+    .tracking-timeline {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid #e5e7eb;
+    }
+
+    .timeline-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0 0 20px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 8px;
+      width: 2px;
+      height: calc(100% + 4px);
+      background: #e5e7eb;
+    }
+
+    .timeline-item:last-child::before {
+      display: none;
+    }
+
+    .timeline-icon {
+      position: absolute;
+      left: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      border: 3px solid #ffffff;
+      z-index: 1;
+    }
+
+    .timeline-item.active .timeline-icon {
+      background: #10b981;
+      border-color: #10b981;
+    }
+
+    .timeline-content {
+      flex: 1;
+    }
+
+    .timeline-message {
+      font-weight: 600;
+      color: #1e3c72;
+      font-size: 15px;
+      margin: 0 0 4px 0;
+    }
+
+    .timeline-date {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .empty-orders {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    .empty-orders h2 {
+      color: #1e3c72;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+    }
+
+    .empty-orders p {
+      color: #6b7280;
+      font-size: 16px;
+      margin: 0 0 32px 0;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .view-details-btn,
+    .cancel-order-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .view-details-btn {
+      background: #f3f4f6;
+      color: #1e3c72;
+    }
+
+    .view-details-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .cancel-order-btn {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .cancel-order-btn:hover {
+      background: #fecaca;
+    }
+
+    .start-chat-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    .start-chat-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(42, 82, 152, 0.4);
+    }
+
+    .start-chat-btn:active {
+      transform: translateY(0);
+    }
+
+    .start-chat-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .cancel-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cancel-modal.active {
+      display: flex;
+    }
+
+    .cancel-modal-content {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .cancel-modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0 0 8px 0;
+    }
+
+    .cancel-modal-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0 0 24px 0;
+    }
+
+    .cancel-reason-option {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cancel-reason-option:hover {
+      border-color: #2a5298;
+      background: #f8faff;
+    }
+
+    .cancel-reason-option input[type="radio"] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .cancel-reason-option label {
+      cursor: pointer;
+      font-size: 15px;
+      color: #1e3c72;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .cancel-modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .cancel-confirm-btn,
+    .cancel-cancel-btn {
+      flex: 1;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .cancel-confirm-btn {
+      background: #dc2626;
+      color: white;
+    }
+
+    .cancel-confirm-btn:hover {
+      background: #b91c1c;
+    }
+
+    .cancel-cancel-btn {
+      background: #f3f4f6;
+      color: #1e3c72;
+    }
+
+    .cancel-cancel-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .status-cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .order-details-expanded {
+      display: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #e5e7eb;
+    }
+
+    .order-details-expanded.active {
+      display: block;
+    }
+
+    .shipping-info {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .shipping-info-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0 0 12px 0;
+    }
+
+    .shipping-info-row {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .shipping-info-label {
+      font-weight: 600;
+      color: #6b7280;
+      min-width: 100px;
+    }
+
+    .shipping-info-value {
+      color: #1e3c72;
+    }
+
+    /* Hide search bar on orders page */
+    .header .search {
+      display: none !important;
+    }
+
+    /* Notification System */
+    .notification-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+
+    .notification-overlay.show {
+      display: flex;
+    }
+
+    .notification-box {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      min-width: 300px;
+      max-width: 500px;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .notification-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .notification-icon {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background: #37e8eb;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .notification-icon::before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .notification-icon.error {
+      background: #f44336;
+    }
+
+    .notification-icon.error::before {
+      content: '✗';
+    }
+
+    .notification-icon.warning {
+      background: #ff9800;
+    }
+
+    .notification-icon.warning::before {
+      content: '⚠';
+    }
+
+    .notification-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    /* Responsive styles for notification/help screens */
+    @media (max-width: 768px) {
+      .notification-overlay {
+        padding: 20px;
+      }
+
+      .notification-box {
+        padding: 30px 24px;
+        min-width: auto;
+        max-width: 90%;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .notification-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .notification-icon::before {
+        font-size: 20px;
+      }
+
+      .notification-text {
+        font-size: 16px;
+      }
+
+      .notification-content {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .notification-overlay {
+        padding: 16px;
+      }
+
+      .notification-box {
+        padding: 24px 20px;
+        max-width: 95%;
+        border-radius: 12px;
+      }
+
+      .notification-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .notification-icon::before {
+        font-size: 18px;
+      }
+
+      .notification-text {
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .notification-content {
+        gap: 10px;
+      }
+    }
+
+    .continue-shopping-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      height: 44px;
+      padding: 0 20px;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      border: none;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    .continue-shopping-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .orders-header {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .continue-shopping-btn {
+        position: static !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+  <main class="orders-container">
+    <div class="orders-header"
+      style="position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:32px">
+      <div style="text-align:center">
+        <h1>My Orders</h1>
+        <p>Track your orders and delivery status</p>
+      </div>
+      <a href="index.html" class="continue-shopping-btn"
+        style="position:absolute;right:0;top:50%;transform:translateY(-50%)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Continue Shopping
+      </a>
+    </div>
+
+    <div id="orders-list">
+      <!-- Orders will be rendered here -->
+    </div>
+  </main>
+
+  <!-- Cancel Order Modal -->
+  <div class="cancel-modal" id="cancel-modal">
+    <div class="cancel-modal-content">
+      <h2 class="cancel-modal-title">Cancel Order</h2>
+      <p class="cancel-modal-subtitle">Please select a reason for cancelling this order:</p>
+
+      <div>
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-1" name="cancel-reason" value="Changed my mind">
+          <label for="reason-1">Changed my mind</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-2" name="cancel-reason" value="Found a better price">
+          <label for="reason-2">Found a better price</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-3" name="cancel-reason" value="Item no longer needed">
+          <label for="reason-3">Item no longer needed</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-4" name="cancel-reason" value="Shipping address incorrect">
+          <label for="reason-4">Shipping address incorrect</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-5" name="cancel-reason" value="Duplicate order">
+          <label for="reason-5">Duplicate order</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-6" name="cancel-reason" value="Payment issue">
+          <label for="reason-6">Payment issue</label>
+        </div>
+
+        <div class="cancel-reason-option">
+          <input type="radio" id="reason-7" name="cancel-reason" value="Other">
+          <label for="reason-7">Other</label>
+        </div>
+      </div>
+
+      <div class="cancel-modal-actions">
+        <button class="cancel-cancel-btn" onclick="closeCancelModal()">Keep Order</button>
+        <button class="cancel-confirm-btn" onclick="confirmCancel()">Confirm Cancellation</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted">© 2025 AeroMart</div>
+    </div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script>
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function getStatusClass(status) {
+      const statusMap = {
+        'pending': 'status-pending',
+        'processing': 'status-processing',
+        'shipped': 'status-shipped',
+        'out_for_delivery': 'status-out-for-delivery',
+        'delivered': 'status-delivered',
+        'cancelled': 'status-cancelled'
+      };
+      return statusMap[status] || 'status-pending';
+    }
+
+    function getStatusLabel(status) {
+      const labelMap = {
+        'pending': 'Pending',
+        'processing': 'Processing',
+        'shipped': 'Shipped',
+        'out_for_delivery': 'Out for Delivery',
+        'delivered': 'Delivered',
+        'cancelled': 'Cancelled'
+      };
+      return labelMap[status] || 'Pending';
+    }
+
+    // Get seller name based on category (matching main.js)
+    function getSellerByCategory(category) {
+      const sellerMap = {
+        'Equipment': 'Fitness Pro Store',
+        'Accessories': 'FitFlex Equipment',
+        'Wearables': 'TechFit Solutions',
+        'Clothing': 'Active Wear Hub'
+      };
+      return sellerMap[category] || 'AeroMart Seller';
+    }
+
+    // Open chat modal from orders page
+    function openChatFromOrder(orderId, sellerName, orderTitle) {
+      // Use order ID as product ID for chat key (since we don't have a product ID in orders)
+      const chatProductId = parseInt(orderId.replace('ORD-', '')) || Date.now();
+      openChatModal(chatProductId, sellerName, orderTitle);
+    }
+
+    function getDaysUntil(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = date - now;
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      return days;
+    }
+
+    function getHardcodedOrders() {
+      const now = new Date();
+      return [
+        {
+          id: 'ORD-1704067200000',
+          trackingNumber: 'TRK1234567890',
+          date: new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'delivered',
+          items: [
+            { title: 'Premium Dumbbells Set', category: 'Equipment', qty: 1, price: 89.99, img: 'p1.svg.jpg' },
+            { title: 'Yoga Mat Pro', category: 'Accessories', qty: 2, price: 34.99, img: 'p2.svg.jpg' }
+          ],
+          shipping: {
+            firstName: 'John',
+            lastName: 'Doe',
+            address: '123 Main Street',
+            city: 'New York',
+            state: 'NY',
+            zip: '10001',
+            country: 'US'
+          },
+          subtotal: 159.97,
+          shipping: 0,
+          tax: 12.80,
+          total: 172.77,
+          tracking: {
+            status: 'delivered',
+            statusHistory: [
+              { status: 'pending', date: new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order placed' },
+              { status: 'processing', date: new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order confirmed and being prepared' },
+              { status: 'shipped', date: new Date(now.getTime() - 13 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order shipped', carrier: 'FedEx', trackingNumber: 'TRK1234567890' },
+              { status: 'out_for_delivery', date: new Date(now.getTime() - 12 * 24 * 60 * 60 * 1000).toISOString(), message: 'Out for delivery' },
+              { status: 'delivered', date: new Date(now.getTime() - 11 * 24 * 60 * 60 * 1000).toISOString(), message: 'Delivered' }
+            ],
+            estimatedDelivery: new Date(now.getTime() - 11 * 24 * 60 * 60 * 1000).toISOString(),
+            carrier: 'FedEx'
+          }
+        },
+        {
+          id: 'ORD-1703980800000',
+          trackingNumber: 'TRK9876543210',
+          date: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'shipped',
+          items: [
+            { title: 'Resistance Bands Set', category: 'Accessories', qty: 1, price: 24.99, img: 'p1.svg.jpg' }
+          ],
+          shipping: {
+            firstName: 'Jane',
+            lastName: 'Smith',
+            address: '456 Oak Avenue',
+            city: 'Los Angeles',
+            state: 'CA',
+            zip: '90001',
+            country: 'US'
+          },
+          subtotal: 24.99,
+          shipping: 9.99,
+          tax: 2.80,
+          total: 37.78,
+          tracking: {
+            status: 'shipped',
+            statusHistory: [
+              { status: 'pending', date: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order placed' },
+              { status: 'processing', date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order confirmed and being prepared' },
+              { status: 'shipped', date: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order shipped', carrier: 'UPS', trackingNumber: 'TRK9876543210' }
+            ],
+            estimatedDelivery: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            carrier: 'UPS'
+          }
+        },
+        {
+          id: 'ORD-1703894400000',
+          trackingNumber: 'TRK5555555555',
+          date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'processing',
+          items: [
+            { title: 'Adjustable Bench', category: 'Equipment', qty: 1, price: 199.99, img: 'p1.svg.jpg' },
+            { title: 'Battle Ropes 15m', category: 'Equipment', qty: 1, price: 79.99, img: 'p2.svg.jpg' }
+          ],
+          shipping: {
+            firstName: 'Mike',
+            lastName: 'Johnson',
+            address: '789 Pine Road',
+            city: 'Chicago',
+            state: 'IL',
+            zip: '60601',
+            country: 'US'
+          },
+          subtotal: 279.98,
+          shipping: 0,
+          tax: 22.40,
+          total: 302.38,
+          tracking: {
+            status: 'processing',
+            statusHistory: [
+              { status: 'pending', date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order placed' },
+              { status: 'processing', date: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString(), message: 'Order confirmed and being prepared' }
+            ],
+            estimatedDelivery: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+            carrier: 'FedEx'
+          }
+        }
+      ];
+    }
+
+    function renderOrders() {
+      let orders = JSON.parse(localStorage.getItem('buyerOrders') || '[]');
+      const hardcodedOrders = getHardcodedOrders();
+
+      // Merge hardcoded orders with user orders (avoid duplicates)
+      const existingIds = new Set(orders.map(o => o.id));
+      hardcodedOrders.forEach(order => {
+        if (!existingIds.has(order.id)) {
+          orders.push(order);
+        }
+      });
+
+      const container = document.getElementById('orders-list');
+
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div class="empty-orders">
+            <h2>No orders yet</h2>
+            <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+            <a href="index.html" class="btn" style="text-decoration:none;display:inline-block">Start Shopping</a>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort orders by date (newest first)
+      orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      container.innerHTML = orders.map(order => {
+        const currentStatus = order.tracking?.status || order.status || 'pending';
+        const statusHistory = order.tracking?.statusHistory || [];
+        const estimatedDelivery = order.tracking?.estimatedDelivery ? new Date(order.tracking.estimatedDelivery) : null;
+        const daysUntil = estimatedDelivery ? getDaysUntil(estimatedDelivery) : null;
+
+        // Find current status index
+        const currentIndex = statusHistory.findIndex(s => s.status === currentStatus);
+
+        const itemsHtml = order.items.map(item => `
+          <div class="order-item">
+            <img src="${item.img}" alt="${item.title}" class="order-item-image">
+            <div class="order-item-details">
+              <div class="order-item-title">${item.title}</div>
+              <div class="order-item-meta">${item.category} • Quantity: ${item.qty}</div>
+              <div class="order-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+            </div>
+          </div>
+        `).join('');
+
+        const timelineHtml = statusHistory.map((statusItem, index) => {
+          const isActive = index <= currentIndex;
+          return `
+            <div class="timeline-item ${isActive ? 'active' : ''}">
+              <div class="timeline-icon"></div>
+              <div class="timeline-content">
+                <div class="timeline-message">${statusItem.message}</div>
+                <div class="timeline-date">${formatDate(statusItem.date)}</div>
+                ${statusItem.carrier ? `<div class="timeline-date">Carrier: ${statusItem.carrier} • Tracking: ${statusItem.trackingNumber || order.trackingNumber}</div>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const canCancel = ['pending', 'processing'].includes(currentStatus);
+        const isCancelled = currentStatus === 'cancelled';
+
+        // Get seller name from first item's category
+        const firstItem = order.items && order.items.length > 0 ? order.items[0] : null;
+        const sellerName = firstItem && firstItem.category ? getSellerByCategory(firstItem.category) : 'AeroMart Seller';
+        const orderTitle = 'Order ' + order.id;
+
+        return `
+          <div class="order-card" data-order-id="${order.id}">
+            <div class="order-header">
+              <div class="order-info">
+                <div class="order-id">${order.id}</div>
+                <div class="order-date">Ordered on ${formatDate(order.date)}</div>
+                ${order.trackingNumber ? `<div class="tracking-number">Tracking: ${order.trackingNumber}</div>` : ''}
+              </div>
+              <div class="order-status">
+                <div class="status-badge ${getStatusClass(currentStatus)}">${getStatusLabel(currentStatus)}</div>
+                ${estimatedDelivery && !isCancelled ? `
+                  <div class="estimated-delivery">
+                    ${daysUntil > 0 ? `Estimated delivery: ${daysUntil} day${daysUntil > 1 ? 's' : ''}` : daysUntil === 0 ? 'Estimated delivery: Today' : 'Delivered'}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+            
+            <div class="order-items">
+              ${itemsHtml}
+            </div>
+            
+            <div class="order-totals">
+              <div class="total-label">Total</div>
+              <div class="total-value">$${order.total.toFixed(2)}</div>
+            </div>
+            
+            <div class="order-actions">
+              <button class="start-chat-btn" onclick="openChatFromOrder('${order.id}', '${sellerName.replace(/'/g, "\\'")}', '${orderTitle.replace(/'/g, "\\'")}')">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Start a Chat
+              </button>
+              <button class="view-details-btn" onclick="toggleOrderDetails('${order.id}')">
+                ${document.querySelector(`[data-order-id="${order.id}"] .order-details-expanded`)?.classList.contains('active') ? 'Hide' : 'View'} Details
+              </button>
+              ${canCancel ? `<button class="cancel-order-btn" onclick="showCancelModal('${order.id}')">Cancel Order</button>` : ''}
+            </div>
+            
+            <div class="order-details-expanded" id="details-${order.id}">
+              ${statusHistory.length > 0 ? `
+                <div class="tracking-timeline">
+                  <div class="timeline-title">Order Tracking</div>
+                  ${timelineHtml}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleOrderDetails(orderId) {
+      const detailsDiv = document.getElementById(`details-${orderId}`);
+      const btn = event.target;
+
+      if (detailsDiv.classList.contains('active')) {
+        detailsDiv.classList.remove('active');
+        btn.textContent = 'View Details';
+      } else {
+        detailsDiv.classList.add('active');
+        btn.textContent = 'Hide Details';
+      }
+    }
+
+    function showCancelModal(orderId) {
+      const modal = document.getElementById('cancel-modal');
+      modal.dataset.orderId = orderId;
+      modal.classList.add('active');
+    }
+
+    function closeCancelModal() {
+      const modal = document.getElementById('cancel-modal');
+      modal.classList.remove('active');
+      // Reset radio selection
+      document.querySelectorAll('input[name="cancel-reason"]').forEach(radio => {
+        radio.checked = false;
+      });
+    }
+
+    function confirmCancel() {
+      const modal = document.getElementById('cancel-modal');
+      const orderId = modal.dataset.orderId;
+      const selectedReason = document.querySelector('input[name="cancel-reason"]:checked');
+
+      if (!selectedReason) {
+        alert('Please select a reason for cancellation');
+        return;
+      }
+
+      // Update order status
+      let orders = JSON.parse(localStorage.getItem('buyerOrders') || '[]');
+      const order = orders.find(o => o.id === orderId);
+
+      if (order) {
+        order.status = 'cancelled';
+        if (order.tracking) {
+          order.tracking.status = 'cancelled';
+          order.tracking.statusHistory.push({
+            status: 'cancelled',
+            date: new Date().toISOString(),
+            message: `Order cancelled: ${selectedReason.value}`,
+            reason: selectedReason.value
+          });
+        }
+        localStorage.setItem('buyerOrders', JSON.stringify(orders));
+
+        closeCancelModal();
+        renderOrders();
+        alert('Order has been cancelled successfully');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader();
+      renderOrders();
+      updateCartCount();
+
+      // Close modal when clicking outside
+      document.getElementById('cancel-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'cancel-modal') {
+          closeCancelModal();
+        }
+      });
+    });
+  </script>
+  <script src="keyboard-navigation.js"></script>
+</body>
+
+</html>

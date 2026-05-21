@@ -1,0 +1,3068 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Products - AeroMart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="/AeroMart_ecommerce1 Final/assets/favicon.png">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e8ba3 50%, #b8c5d1 75%, #e8f0f8 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(55, 232, 235, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Typography improvements */
+    body {
+      color: #2c3e50;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Slogan/Tagline */
+    .slogan {
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 20px;
+      margin: 0 auto 32px auto;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.3px;
+      opacity: 0.95;
+      font-style: italic;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+    /* Section Headings */
+    h2 {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 42px;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    /* Products header with sort filter - Daraz style */
+    .products-header-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      padding: 0 4px;
+    }
+
+    .products-header-wrapper h2 {
+      margin: 0 auto;
+      flex: 1;
+      text-align: center !important;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+    }
+
+    .categories-sort-wrapper {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .categories-sort-wrapper .sort-by-filter {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      z-index: 100;
+    }
+
+    /* Image Slider Styles - Daraz style with product images */
+    .image-slider-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 30px auto 40px auto;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-slider {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      overflow: hidden;
+    }
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 100%;
+    }
+
+    .slider-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .slider-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* Promotional Overlay on Product Images */
+    .promo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(30, 60, 114, 0.85) 0%, rgba(42, 82, 152, 0.75) 50%, rgba(55, 232, 235, 0.65) 100%);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+    }
+
+    .promo-overlay.sale {
+      background: linear-gradient(135deg, rgba(244, 67, 54, 0.85) 0%, rgba(233, 30, 99, 0.75) 50%, rgba(255, 87, 34, 0.65) 100%);
+    }
+
+    .promo-overlay.fitness {
+      background: linear-gradient(135deg, rgba(30, 60, 114, 0.85) 0%, rgba(42, 82, 152, 0.75) 50%, rgba(55, 232, 235, 0.65) 100%);
+    }
+
+    .promo-overlay.new {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.85) 0%, rgba(139, 195, 74, 0.75) 50%, rgba(205, 220, 57, 0.65) 100%);
+    }
+
+    .promo-content {
+      z-index: 2;
+      position: relative;
+      color: white;
+      max-width: 50%;
+    }
+
+    .promo-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1e3c72;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .promo-title {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+
+    .promo-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      opacity: 0.95;
+      line-height: 1.4;
+    }
+
+    .promo-offer {
+      font-size: 48px;
+      font-weight: 900;
+      margin: 16px 0;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
+      color: #ffeb3b;
+      line-height: 1;
+    }
+
+    .promo-cta {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #1e3c72;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 25px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .promo-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      background: white;
+    }
+
+    .product-showcase {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .product-showcase img {
+      position: relative;
+      width: auto;
+      height: 200px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(30, 60, 114, 0.9) !important;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(55, 232, 235, 0.5);
+      color: white;
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 4px !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .slider-nav:hover {
+      background: rgba(55, 232, 235, 0.9);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 16px rgba(55, 232, 235, 0.5);
+    }
+
+    .slider-nav.prev {
+      left: 20px;
+    }
+
+    .slider-nav.next {
+      right: 20px;
+    }
+
+    .slider-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .slider-dot.active {
+      background: rgba(55, 232, 235, 1);
+      border-color: rgba(55, 232, 235, 1);
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .image-slider-container {
+        max-width: 95%;
+      }
+
+      .image-slider {
+        height: 280px;
+      }
+
+      .promo-content {
+        max-width: 70%;
+        padding: 0 20px;
+      }
+
+      .promo-title {
+        font-size: 24px;
+      }
+
+      .promo-subtitle {
+        font-size: 14px;
+      }
+
+      .promo-offer {
+        font-size: 32px;
+      }
+
+      .promo-cta {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+
+      .product-showcase {
+        right: 10px;
+        gap: 10px;
+      }
+
+      .product-showcase img {
+        height: 120px;
+      }
+
+      .slider-nav {
+        width: 30px;
+        height: 30px;
+      }
+
+      .slider-nav.prev {
+        left: 10px;
+      }
+
+      .slider-nav.next {
+        right: 10px;
+      }
+
+      .products-header-wrapper h2 {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      .products-header-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .categories-sort-wrapper {
+        margin-bottom: 16px;
+      }
+
+      .categories-sort-wrapper .sort-by-filter {
+        position: static;
+        width: 100%;
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    /* Sort By filter - Matching button style */
+    .sort-by-filter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sort-by-filter label {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    select.sort-by-select,
+    #sort-by-select.sort-by-select,
+    .sort-by-filter select.sort-by-select,
+    .sort-by-select,
+    .sort-by-select:default,
+    .sort-by-select:enabled,
+    .sort-by-select:not(:disabled),
+    .sort-by-select:not(:focus),
+    .sort-by-select:not(:hover),
+    .sort-by-select:not(:active) {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      background-color: #2a5298 !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      border-radius: 10px !important;
+      padding: 0 16px !important;
+      padding-right: 40px !important;
+      height: 44px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+      min-width: 180px !important;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 12px center !important;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+      z-index: 100 !important;
+      position: relative !important;
+    }
+
+    .sort-by-select:hover,
+    .sort-by-select:focus,
+    .sort-by-select:active,
+    .sort-by-select:focus-visible,
+    .sort-by-select:focus-within {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      background-color: #2a5298 !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      box-shadow: 0 8px 24px rgba(55, 232, 235, 0.5) !important;
+      transform: translateY(-3px) !important;
+      outline: none !important;
+    }
+
+    /* Ensure select stays blue in ALL states - highest specificity */
+    select.sort-by-select[open],
+    select#sort-by-select,
+    #sort-by-select.sort-by-select,
+    .sort-by-filter select#sort-by-select,
+    .sort-by-select[open],
+    .sort-by-select:not([multiple]):focus,
+    select.sort-by-select,
+    #sort-by-select {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      background-color: #2a5298 !important;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 12px center !important;
+    }
+
+    /* Style dropdown options - make them visible */
+    .sort-by-select option {
+      background: #ffffff !important;
+      color: #1e3c72 !important;
+      padding: 12px 16px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      display: block !important;
+    }
+
+    .sort-by-select option:hover,
+    .sort-by-select option:focus {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      color: #ffffff !important;
+    }
+
+    .sort-by-select option:checked,
+    .sort-by-select option[selected] {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* Category Cards - Fixed Size */
+    .category {
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3) !important;
+      padding: 14px !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      min-height: 280px !important;
+    }
+
+    .category:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .category strong {
+      color: #1e3c72 !important;
+      font-weight: 600;
+      font-size: 18px;
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 2px;
+    }
+
+    .category .small,
+    .category .muted {
+      color: #2c3e50 !important;
+      font-size: 14px;
+      opacity: 0.85;
+      line-height: 1.4;
+      margin-bottom: 2px;
+    }
+
+    .category .price {
+      margin-top: 2px;
+      margin-bottom: 0;
+    }
+
+    .category img {
+      border-radius: 12px;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* Product Cards - Fixed Size */
+    .card {
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3) !important;
+      padding: 20px !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      min-height: 420px !important;
+      border-radius: 16px !important;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+    }
+
+
+    .card h3 {
+      color: #1e3c72 !important;
+      font-weight: 700;
+      font-size: 21px;
+      margin: 12px 0 6px 0;
+      line-height: 1.4;
+      min-height: 44px;
+    }
+
+    .card .price {
+      color: #1e3c72 !important;
+      font-weight: 700;
+      font-size: 20px;
+      margin: 6px 0 4px 0;
+    }
+
+    .card .muted {
+      color: #2c3e50 !important;
+      opacity: 0.85;
+      font-size: 14px;
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    /* Uniform Button Styling - All buttons same size and style */
+    .btn,
+    .btn-ghost,
+    button,
+    .cat,
+    a[class*="btn"],
+    #clear-search {
+      width: 160px !important;
+      height: 44px !important;
+      padding: 0 !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4) !important;
+      text-decoration: none !important;
+      transition: all 0.3s ease !important;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .btn:hover,
+    .btn-ghost:hover,
+    button:hover,
+    .cat:hover,
+    a[class*="btn"]:hover,
+    #clear-search:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: translateY(-3px) !important;
+      box-shadow: 0 8px 24px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    .btn:active,
+    .btn-ghost:active,
+    button:active,
+    .cat:active,
+    a[class*="btn"]:active,
+    #clear-search:active {
+      transform: translateY(-1px) !important;
+    }
+
+    /* Category filter buttons - same style as other buttons */
+    .cat {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      color: #ffffff !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4) !important;
+    }
+
+    /* Card action buttons - consistent sizing */
+    .card .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .card .btn,
+    .card button,
+    .card a.btn {
+      width: 100% !important;
+      height: 44px !important;
+      padding: 0 !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      border-radius: 8px !important;
+      margin: 0 !important;
+      flex-shrink: 0;
+    }
+
+    /* Product card images - consistent sizing */
+    .card .imgwrap {
+      height: 260px !important;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 4px;
+    }
+
+    .card .imgwrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ensure grid items have same height */
+    .grid {
+      display: grid;
+      align-items: stretch;
+    }
+
+    .grid .category,
+    .grid .card {
+      height: 100%;
+    }
+
+    /* Category buttons - uniform sizing */
+    .category .btn,
+    .category button,
+    .category a.btn {
+      width: 100% !important;
+      height: 44px !important;
+      padding: 0 !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      border-radius: 8px !important;
+      margin-top: auto !important;
+      flex-shrink: 0;
+    }
+
+    /* Reduce spacing in category cards */
+    .category>* {
+      margin-bottom: 0;
+    }
+
+    /* Search bar styling - Daraz style - Wider */
+    .search {
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(55, 232, 235, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      max-width: 900px !important;
+      width: 100% !important;
+      flex: 1;
+      display: flex !important;
+      align-items: center !important;
+      border-radius: 4px !important;
+      position: relative;
+    }
+
+    .search input {
+      color: #1e3c72 !important;
+      font-size: 15px;
+      flex: 1;
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      padding: 12px 16px !important;
+    }
+
+    .search input::placeholder {
+      color: #546e7a !important;
+    }
+
+    /* Search icon button on right - Smaller */
+    .search-icon-btn {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: none !important;
+      color: white !important;
+      padding: 0 !important;
+      width: 44px !important;
+      height: 44px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 0 4px 4px 0 !important;
+      transition: all 0.2s ease !important;
+      flex-shrink: 0 !important;
+    }
+
+    .search-icon-btn svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    .search-icon-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+    }
+
+    /* Clear X button - shows when there's text */
+    .search-clear-btn {
+      display: none !important;
+      background: transparent !important;
+      border: none !important;
+      color: #546e7a !important;
+      cursor: pointer !important;
+      padding: 8px !important;
+      margin-right: 4px !important;
+      border-radius: 50% !important;
+      transition: all 0.2s ease !important;
+      flex-shrink: 0 !important;
+      width: 28px !important;
+      height: 28px !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .search-clear-btn.show {
+      display: flex !important;
+    }
+
+    .search-clear-btn:hover {
+      background: rgba(0, 0, 0, 0.05) !important;
+      color: #1e3c72 !important;
+    }
+
+    /* Search suggestions dropdown - Daraz style */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      margin-top: -2px;
+    }
+
+    .search-suggestions.show {
+      display: block;
+    }
+
+    .search-suggestion-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-suggestion-item:hover {
+      background: rgba(42, 82, 152, 0.05);
+    }
+
+    .search-suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .search-suggestion-item img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .search-suggestion-item-info {
+      flex: 1;
+    }
+
+    .search-suggestion-item-info strong {
+      color: #1e3c72;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .search-suggestion-item-info span {
+      color: #8b9dc3;
+      font-size: 12px;
+    }
+
+    /* Header styling - transparent with gradient */
+    .header {
+      background: rgba(30, 60, 114, 0.15) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Wishlist link styling - blue gradient - HCI consistent sizing */
+    .wishlist-link {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3) !important;
+      color: white !important;
+      height: 44px !important;
+      padding: 0 16px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+    }
+
+    .wishlist-link:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.4) !important;
+    }
+
+    /* My Orders link styling - blue gradient - HCI consistent sizing */
+    .my-orders-link {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3) !important;
+      color: white !important;
+      height: 44px !important;
+      padding: 0 16px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+    }
+
+    .my-orders-link:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.4) !important;
+    }
+
+    /* Header icon buttons - blue gradient - HCI consistent sizing */
+    .header-icon-btn {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 10px !important;
+      border: none;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    .header-icon-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.4);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 8px;
+      height: 8px;
+      background: #f44336;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    /* User menu - HCI consistent sizing */
+    .user-menu {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      height: 44px !important;
+      padding: 0 16px !important;
+      border-radius: 10px !important;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: transparent;
+    }
+
+    .user-menu:hover {
+      background: rgba(245, 247, 250, 0.8);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-menu {
+      min-width: 180px !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+    }
+
+    .user-info {
+      min-width: 120px !important;
+      flex: 1 !important;
+      width: auto !important;
+      overflow: visible !important;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e3c72;
+      white-space: nowrap;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: #8b9dc3;
+      white-space: nowrap;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .my-orders-link {
+      white-space: nowrap !important;
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Notification System */
+    .notification-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+
+    .notification-overlay.show {
+      display: flex;
+    }
+
+    .notification-box {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      min-width: 300px;
+      max-width: 500px;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .notification-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .notification-icon {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background: #37e8eb;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .notification-icon::before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .notification-icon.error {
+      background: #f44336;
+    }
+
+    .notification-icon.error::before {
+      content: '✗';
+    }
+
+    .notification-icon.warning {
+      background: #ff9800;
+    }
+
+    .notification-icon.warning::before {
+      content: '⚠';
+    }
+
+    .notification-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    /* Responsive styles for notification/help screens */
+    @media (max-width: 768px) {
+      .notification-overlay {
+        padding: 20px;
+      }
+
+      .notification-box {
+        padding: 30px 24px;
+        min-width: auto;
+        max-width: 90%;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .notification-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .notification-icon::before {
+        font-size: 20px;
+      }
+
+      .notification-text {
+        font-size: 16px;
+      }
+
+      .notification-content {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .notification-overlay {
+        padding: 16px;
+      }
+
+      .notification-box {
+        padding: 24px 20px;
+        max-width: 95%;
+        border-radius: 12px;
+      }
+
+      .notification-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .notification-icon::before {
+        font-size: 18px;
+      }
+
+      .notification-text {
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .notification-content {
+        gap: 10px;
+      }
+    }
+
+    /* Header layout - ensure search stays centered */
+    .header {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+    }
+
+    .brand {
+      flex-shrink: 0 !important;
+    }
+
+    /* Search container - matching wishlist.html exactly */
+    .search-container {
+      display: flex !important;
+      align-items: center !important;
+      flex: 1 !important;
+      margin: 0 !important;
+      max-width: none !important;
+      width: auto !important;
+    }
+
+    .search {
+      max-width: 700px !important;
+      width: 100% !important;
+    }
+
+    /* Price Filter Button */
+    .price-filter-btn {
+      transition: all 0.2s ease !important;
+    }
+
+    .price-filter-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.4) !important;
+    }
+
+    .header-actions {
+      flex-shrink: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      margin-left: 0 !important;
+    }
+
+    /* My Orders button - more appealing */
+    /* User menu - ensure text is fully visible */
+    .user-menu {
+      min-width: 180px !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+    }
+
+    .user-info {
+      min-width: 120px !important;
+      flex: 1 !important;
+      width: auto !important;
+      overflow: visible !important;
+    }
+
+    .user-name,
+    .user-role {
+      overflow: visible !important;
+      text-overflow: clip !important;
+      white-space: nowrap !important;
+      width: auto !important;
+    }
+
+    /* Modal styles for buyer profile */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 0;
+      max-width: 700px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #6b7280;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: #f3f4f6;
+      color: #1e3c72;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #1e3c72;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      color: #1e3c72 !important;
+      background: #ffffff !important;
+      font-weight: 500;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #1e3c72;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* AeroMart brand label */
+    .brand>div>div {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 16px !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    /* Enhanced View Cart Button - Larger and more prominent */
+    .floating-cart-btn {
+      min-width: 180px !important;
+      height: 64px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      padding: 0 24px !important;
+      border-radius: 32px !important;
+      box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5) !important;
+      border-width: 3px !important;
+      gap: 12px !important;
+      animation: cartPulse 2s ease-in-out infinite;
+    }
+
+    .floating-cart-btn svg {
+      width: 24px !important;
+      height: 24px !important;
+    }
+
+    .floating-cart-count {
+      width: 26px !important;
+      height: 26px !important;
+      font-size: 13px !important;
+      top: 4px !important;
+      right: 4px !important;
+      border-width: 3px !important;
+    }
+
+    @keyframes cartPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5), 0 0 0 0 rgba(55, 232, 235, 0.7);
+      }
+
+      50% {
+        box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5), 0 0 0 8px rgba(55, 232, 235, 0);
+      }
+    }
+
+    /* 2D/3D Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes rotate3D {
+      0% {
+        transform: perspective(1000px) rotateY(0deg);
+      }
+
+      100% {
+        transform: perspective(1000px) rotateY(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    /* Apply animations to elements */
+    .image-slider-container {
+      animation: fadeInScale 0.8s ease-out;
+    }
+
+    .slogan {
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .products-header-wrapper {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .categories-sort-wrapper {
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    /* Product cards animation */
+    .card {
+      animation: fadeInUp 0.6s ease-out both;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    }
+
+    .card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    .card:nth-child(7) {
+      animation-delay: 0.7s;
+    }
+
+    .card:nth-child(8) {
+      animation-delay: 0.8s;
+    }
+
+    /* 3D Hover effect for cards */
+    .card:hover {
+      transform: translateY(-8px) perspective(1000px) rotateX(2deg) scale(1.02);
+    }
+
+    /* Category buttons animation */
+    .cat {
+      animation: fadeInScale 0.5s ease-out both;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .cat:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .cat:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .cat:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .cat:nth-child(4) {
+      animation-delay: 0.25s;
+    }
+
+    .cat:nth-child(5) {
+      animation-delay: 0.3s;
+    }
+
+    .cat:hover {
+      transform: translateY(-3px) scale(1.05);
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    /* Slider animations */
+    .slider-slide {
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    .slider-nav {
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .slider-nav:hover {
+      transform: translateY(-50%) scale(1.15) rotate(5deg);
+    }
+
+    /* Product showcase images floating */
+    .product-showcase img {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .product-showcase img:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    /* Buttons 3D press effect */
+    .btn,
+    .btn-ghost,
+    button,
+    .cat {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:active,
+    .btn-ghost:active,
+    button:active,
+    .cat:active {
+      transform: translateY(2px) scale(0.98);
+      box-shadow: 0 2px 8px rgba(30, 60, 114, 0.3) !important;
+    }
+
+    /* Promo badge animation */
+    .promo-badge {
+      animation: slideInLeft 0.6s ease-out 0.3s both;
+    }
+
+    .promo-title {
+      animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+
+    .promo-offer {
+      animation: pulse 1s ease-in-out 0.6s infinite;
+    }
+
+    .promo-cta {
+      animation: fadeInScale 0.6s ease-out 0.8s both;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .promo-cta:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* Sort filter animation */
+    .sort-by-filter {
+      animation: slideInRight 0.6s ease-out 0.5s both;
+    }
+
+    /* Category cards animation */
+    .category {
+      animation: fadeInScale 0.5s ease-out both;
+      transform-style: preserve-3d;
+    }
+
+    .category:hover {
+      transform: translateY(-6px) perspective(1000px) rotateX(3deg);
+    }
+
+    /* Smooth scroll reveal */
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+
+
+    /* Image zoom effect on card hover */
+    .card .imgwrap img {
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .card:hover .imgwrap img {
+      transform: scale(1.1) rotate(1deg);
+    }
+
+    /* Smooth transitions for all interactive elements */
+    * {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .floating-cart-btn:hover {
+      transform: translateY(-6px) scale(1.08) !important;
+      box-shadow: 0 14px 40px rgba(55, 232, 235, 0.6) !important;
+    }
+
+    @media (max-width: 768px) {
+      .floating-cart-btn {
+        min-width: 160px !important;
+        height: 58px !important;
+        font-size: 15px !important;
+        padding: 0 20px !important;
+      }
+
+      .floating-cart-btn svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .floating-cart-count {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Footer styling - matching checkout.html */
+    .footer {
+      background: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer .container {
+      text-align: center;
+      padding: 0;
+    }
+
+    /* Footer copyright text - override all other styles */
+    .footer .muted,
+    .footer .small,
+    .footer .container .small,
+    .footer .container .muted,
+    .footer .container .small.muted,
+    footer .footer .container .small.muted,
+    .footer div.small.muted,
+    .footer .container div.small.muted,
+    .footer .footer-copyright {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-size: 16px !important;
+      font-weight: 500 !important;
+      margin: 0 !important;
+      line-height: 1.5 !important;
+    }
+
+    /* Additional override for any nested elements */
+    .footer * .small.muted,
+    .footer * .muted.small {
+      font-size: 16px !important;
+    }
+
+    /* Container spacing - wider for better card display */
+    .container {
+      padding: 32px 24px 48px 24px;
+      max-width: 1400px !important;
+    }
+
+    /* Reduce spacing between header and Products label */
+    main h2:first-child {
+      margin-top: 0;
+    }
+
+    /* Grid spacing - wider cards, less congested */
+    .grid {
+      gap: 32px;
+    }
+
+    .grid.resp {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    }
+
+    @media (min-width: 1600px) {
+      .grid.resp {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1599px) {
+      .grid.resp {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+    }
+
+    @media (min-width: 900px) and (max-width: 1199px) {
+      .grid.resp {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (min-width: 600px) and (max-width: 899px) {
+      .grid.resp {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 599px) {
+      .grid.resp {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* Category wrap spacing */
+    #cat-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0;
+      margin-top: 0;
+      padding: 0 4px;
+    }
+
+    /* Product grid spacing */
+    #product-grid {
+      margin-top: 60px !important;
+    }
+
+    /* Quick View Modal Styles */
+    .modal {
+      display: none !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      backdrop-filter: blur(5px) !important;
+      z-index: 9999 !important;
+      padding: 20px !important;
+      opacity: 0;
+      transition: opacity 0.3s ease !important;
+    }
+
+    .modal.open {
+      display: flex !important;
+      opacity: 1 !important;
+    }
+
+    .quick-view-modal {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr !important;
+      grid-template-rows: 1fr !important;
+      gap: 20px !important;
+      max-width: 1400px !important;
+      max-height: 90vh !important;
+      width: 95% !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border-radius: 16px !important;
+      padding: 24px !important;
+      position: relative !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+      margin: 0 auto !important;
+      transform: scale(0.95);
+      transition: transform 0.3s ease !important;
+      overflow-y: auto !important;
+      align-items: stretch !important;
+    }
+
+    .modal.open .quick-view-modal {
+      transform: scale(1) !important;
+    }
+
+    .quick-view-left {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px !important;
+      grid-column: 1;
+      height: 100%;
+      min-height: 750px !important;
+      max-height: 850px !important;
+      width: 100% !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    /* Zoom Controls Removed */
+    .quick-view-left .image-zoom-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: crosshair;
+      /* Indicate zoom availability */
+    }
+
+    .quick-view-left img {
+      width: auto !important;
+      max-width: 100% !important;
+      height: auto !important;
+      max-height: 100% !important;
+      min-height: 750px !important;
+      max-height: 850px !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      border-radius: 8px;
+      display: block;
+      margin: auto;
+      transition: transform 0.1s ease-out;
+      /* Faster transition for smooth tracking */
+      transform-origin: center center;
+      pointer-events: none;
+      /* Let events pass to container */
+    }
+
+    .quick-view-right {
+      display: flex !important;
+      flex-direction: column !important;
+      grid-column: 2;
+      gap: 8px !important;
+      height: 100%;
+      align-self: stretch !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    #qm-reviews {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    #qm-reviews>div {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      margin: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .quick-view-right>div {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .quick-view-right h2 {
+      color: #1e3c72 !important;
+      margin: 0 0 4px 0 !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+    }
+
+    .quick-view-right p {
+      line-height: 1.5 !important;
+      color: #2c3e50 !important;
+      font-size: 12px !important;
+      margin: 0 !important;
+    }
+
+    #qm-desc {
+      line-height: 1.6 !important;
+      color: #2c3e50 !important;
+      font-size: 15px !important;
+      margin: 0 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .modal-close-btn {
+      position: absolute !important;
+      top: 8px !important;
+      right: 8px !important;
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      border: none !important;
+      background: rgba(30, 60, 114, 0.9) !important;
+      color: white !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 22px !important;
+      font-weight: bold !important;
+      z-index: 100 !important;
+      transition: all 0.2s ease !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(30, 60, 114, 1) !important;
+      transform: scale(1.1) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .color-option {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 3px solid #ccc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0 !important;
+      margin: 0;
+      background: inherit !important;
+    }
+
+    /* Override button styles for color options */
+    .color-option,
+    .color-option.btn,
+    .color-option.btn-ghost,
+    button.color-option {
+      background-image: none !important;
+      border: 3px solid #ccc !important;
+      box-shadow: none !important;
+      width: 45px !important;
+      height: 45px !important;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: inline-block !important;
+    }
+
+    /* Ensure color buttons show their actual colors */
+    #qm-colors button,
+    #qm-colors .color-option {
+      background-image: none !important;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-option.selected {
+      border-color: #1e3c72 !important;
+      border-width: 4px !important;
+      box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2) !important;
+    }
+
+    .qty-selector input {
+      background: white;
+      color: #1e3c72;
+      font-weight: 600;
+    }
+
+    .qty-selector input:focus {
+      outline: none;
+      border-color: #1e3c72 !important;
+    }
+
+    /* Quantity selector button styles - Dark blue with white icons */
+    #qm-qty-dec,
+    #qm-qty-inc {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+      width: 44px !important;
+      padding: 0 !important;
+    }
+
+    #qm-qty-dec:hover,
+    #qm-qty-inc:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: scale(1.05) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-qty-dec svg,
+    #qm-qty-inc svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Button styles for Buy Now - Dark blue with white text */
+    #qm-buy-now {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #qm-buy-now:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-buy-now svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Button styles for Add to Cart - Dark blue with white text */
+    #qm-add {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #qm-add:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-add svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Start Chat Button Styling */
+    #qm-start-chat-btn {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      padding: 14px 24px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 16px rgba(42, 82, 152, 0.35) !important;
+      letter-spacing: 0.3px !important;
+    }
+
+    #qm-start-chat-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-start-chat-btn svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    /* Seller Info Section */
+    #qm-seller-info {
+      border: 1px solid rgba(42, 82, 152, 0.1) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    #qm-seller-name {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+    }
+
+    @media (max-width: 768px) {
+      .quick-view-modal {
+        grid-template-columns: 1fr !important;
+        max-width: 95% !important;
+        padding: 16px !important;
+        max-height: 90vh !important;
+      }
+
+      .quick-view-left {
+        grid-column: 1 !important;
+        min-height: 400px !important;
+        max-height: 450px !important;
+      }
+
+      .quick-view-right {
+        grid-column: 1 !important;
+      }
+
+      .quick-view-left img {
+        min-height: 400px !important;
+        max-height: 450px !important;
+      }
+    }
+  </style>
+  <style>
+    .product-3d {
+      display: flex;
+      gap: 40px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      max-width: 1100px;
+      margin: 30px auto;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-3d:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .iframe-box {
+      width: 520px;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #eaeaea;
+      max-width: 100%;
+    }
+
+    .iframe-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .details-3d h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .price-3d {
+      font-size: 26px;
+      color: #28a745;
+      margin: 10px 0;
+    }
+
+    .details-3d ul {
+      padding-left: 18px;
+    }
+
+    .details-3d button {
+      margin-top: 15px;
+      padding: 12px 22px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .details-3d button:hover {
+      background: #333;
+    }
+
+    @media (max-width: 900px) {
+      .product-3d {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .iframe-box {
+        width: 100%;
+        height: 300px;
+      }
+    }
+
+    /* Sticky Header Container - Reverted to static */
+    .sticky-header-container {
+      position: relative;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Override header sticky since it's in container now */
+    .sticky-header-container .header {
+      position: relative !important;
+      top: 0 !important;
+    }
+
+    /* Scrolling Banner */
+    .scrolling-banner {
+      width: 100%;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 25%, #ffa500 50%, #ff6347 75%, #ff4757 100%);
+      padding: 16px 0;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .scrolling-banner-content {
+      display: flex;
+      white-space: nowrap;
+      animation: scroll-left 15s linear infinite;
+    }
+
+
+
+    .scrolling-banner-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 50px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 18px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .scrolling-banner-item::before {
+      content: "✨";
+      font-size: 22px;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .scrolling-banner-item {
+        font-size: 16px;
+        padding: 0 35px;
+        gap: 15px;
+      }
+
+      .scrolling-banner-item::before {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sticky-header-container">
+    <div id="site-header"></div>
+
+    <!-- Scrolling Banner -->
+    <div class="scrolling-banner">
+      <div class="scrolling-banner-content">
+        <div class="scrolling-banner-item">🔥 MEGA SALE - Up to 50% OFF on All Fitness Equipment</div>
+        <div class="scrolling-banner-item">🚚 FREE SHIPPING on Orders Over $100</div>
+        <div class="scrolling-banner-item">⭐ New Arrivals - Latest Fitness Gear Available Now</div>
+        <div class="scrolling-banner-item">💪 Premium Quality Equipment - 2 Years Warranty</div>
+        <div class="scrolling-banner-item">🎁 Special Offers - Limited Time Only</div>
+        <div class="scrolling-banner-item">🔥 MEGA SALE - Up to 50% OFF on All Fitness Equipment</div>
+        <div class="scrolling-banner-item">🚚 FREE SHIPPING on Orders Over $100</div>
+        <div class="scrolling-banner-item">⭐ New Arrivals - Latest Fitness Gear Available Now</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Promotional Banner Slider with Product Images -->
+    <div class="image-slider-container">
+      <div class="image-slider" id="image-slider">
+        <div class="slider-track" id="slider-track">
+          <div class="slider-slide">
+            <img src="p1.svg.jpg" alt="Fitness Equipment">
+            <div class="promo-overlay sale">
+              <div class="promo-content">
+                <div class="promo-badge">Premium Quality</div>
+                <div class="promo-title">Transform Your Body</div>
+                <div class="promo-subtitle">Premium Home Gym Equipment</div>
+                <div class="promo-offer">FREE SHIPPING</div>
+                <div class="promo-subtitle">On Orders Over $100</div>
+                <a href="#product-grid" class="promo-cta">Explore Now</a>
+              </div>
+              <div class="product-showcase">
+                <img src="Cable Machine.png" alt="Cable Machine" onerror="this.style.display='none'">
+                <img src="Squat Rack.png" alt="Squat Rack" onerror="this.style.display='none'">
+              </div>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="Barbell Set 50kg.png" alt="Barbell Set">
+            <div class="promo-overlay new">
+              <div class="promo-content">
+                <div class="promo-badge">New Arrivals</div>
+                <div class="promo-title">Latest Fitness Gear</div>
+                <div class="promo-subtitle">Get the newest equipment first</div>
+                <div class="promo-offer">30% OFF</div>
+                <div class="promo-subtitle">Limited Time Only</div>
+                <a href="#product-grid" class="promo-cta">Discover More</a>
+              </div>
+              <div class="product-showcase">
+                <img src="Massage Gun.png" alt="Massage Gun" onerror="this.style.display='none'">
+                <img src="Fitness Tracker Band.png" alt="Fitness Tracker" onerror="this.style.display='none'">
+              </div>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="Exercise Bike.png" alt="Exercise Bike">
+            <div class="promo-overlay fitness">
+              <div class="promo-content">
+                <div class="promo-badge">Cardio Special</div>
+                <div class="promo-title">Cardio Equipment Sale</div>
+                <div class="promo-subtitle">Best deals on cardio machines</div>
+                <div class="promo-offer">40% OFF</div>
+                <div class="promo-subtitle">This Week Only</div>
+                <a href="#product-grid" class="promo-cta">Shop Now</a>
+              </div>
+              <div class="product-showcase">
+                <img src="Treadmill.png" alt="Treadmill" onerror="this.style.display='none'">
+                <img src="Rowing Machine.png" alt="Rowing Machine" onerror="this.style.display='none'">
+              </div>
+            </div>
+          </div>
+          <div class="slider-slide">
+            <img src="Cable Machine.png" alt="Cable Machine">
+            <div class="promo-overlay sale">
+              <div class="promo-content">
+                <div class="promo-badge">Strength Training</div>
+                <div class="promo-title">Build Your Strength</div>
+                <div class="promo-subtitle">Professional strength equipment</div>
+                <div class="promo-offer">35% OFF</div>
+                <div class="promo-subtitle">Limited Stock</div>
+                <a href="#product-grid" class="promo-cta">Explore</a>
+              </div>
+              <div class="product-showcase">
+                <img src="Squat Rack.png" alt="Squat Rack" onerror="this.style.display='none'">
+                <img src="Barbell Set 50kg.png" alt="Barbell Set" onerror="this.style.display='none'">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="slider-nav prev" id="slider-prev">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button class="slider-nav next" id="slider-next">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="slider-dots" id="slider-dots"></div>
+      </div>
+    </div>
+
+    <p class="slogan">Shop with ease, enjoy the experience! Discover premium fitness products,accessories,clothes and
+      many more at unbeatable prices.</p>
+    <div class="products-header-wrapper">
+      <h2>Products</h2>
+    </div>
+    <div class="categories-sort-wrapper">
+      <div id="cat-wrap"></div>
+      <div class="sort-by-filter">
+        <label>Sort By:</label>
+        <select id="sort-by-select" class="sort-by-select">
+          <option value="none">Best Match</option>
+          <option value="lowest">Price low to high</option>
+          <option value="highest">Price high to low</option>
+        </select>
+      </div>
+    </div>
+    <div id="product-grid" class="grid resp"></div>
+
+
+  </main>
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script src="keyboard-navigation.js"></script>
+  <script>
+    // Add additional products for index page only
+    const additionalProducts = [
+      {
+        id: 13,
+        title: "Adjustable Weight Bench",
+        price: 179.99,
+        cost: 110.00,
+        img: "Adjustable Weight Bench.png",
+        category: "Equipment",
+        sellerName: "Strength Gear Co",
+        desc: "Transform your home gym with our Professional Adjustable Weight Bench. Features multiple incline positions from flat to 85 degrees, allowing you to target different muscle groups effectively. The sturdy steel frame supports up to 600 pounds, ensuring safety during heavy lifting sessions. The comfortable padded seat and backrest are covered in premium vinyl that's easy to clean and maintain. The bench includes leg hold-downs and wheels for easy transportation. Compact foldable design saves space when not in use. Perfect for bench presses, dumbbell workouts, and various strength training exercises. Ideal for serious fitness enthusiasts who want professional-grade equipment at home.",
+        sold: 320,
+        rating: 4.6,
+        reviews: 280,
+        gallery: ["p1.svg.jpg", "p1.svg.jpg", "p1.svg.jpg"],
+        reviewList: [
+          { name: "Alex Morgan", rating: 5, comment: "Excellent weight bench! The multiple incline positions are perfect for targeting different muscles. Very sturdy and well-built.", date: "1 week ago" },
+          { name: "Tyler Brooks", rating: 4, comment: "Great bench for home gym. The padding is comfortable and the foldable design saves space. Good value for money.", date: "2 weeks ago" },
+          { name: "Jordan Smith", rating: 5, comment: "Professional quality bench. The steel frame is solid and supports heavy weights easily. Highly recommend!", date: "3 days ago" },
+          { name: "Casey Johnson", rating: 4, comment: "Good bench overall. Easy to adjust and the wheels make it convenient to move. Perfect for my home workouts.", date: "1 month ago" }
+        ]
+      },
+      {
+        id: 14,
+        title: "Jump Rope Pro",
+        price: 14.99,
+        cost: 7.00,
+        img: "Jump Rope Pro.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Achieve your cardio goals with our Professional Jump Rope. Made from high-quality PVC-coated steel cable that's durable and provides smooth rotation. The adjustable length accommodates users from 4'10\" to 6'6\", making it perfect for the whole family. The ergonomic foam handles offer a comfortable grip and reduce hand fatigue during extended workouts. The weighted cable provides excellent feedback and helps improve coordination and timing. Perfect for cardio workouts, boxing training, and improving agility. Lightweight and portable, it fits easily in any gym bag. Great for burning calories, improving cardiovascular health, and enhancing coordination. Suitable for beginners to professional athletes.",
+        sold: 2100,
+        rating: 4.5,
+        reviews: 1650,
+        gallery: ["s3.png", "s3.png", "s3.png"]
+      },
+      {
+        id: 15,
+        title: "Fitness Tracker Band",
+        price: 49.99,
+        cost: 28.00,
+        img: "Fitness Tracker Band.png",
+        category: "Wearables",
+        sellerName: "TechFit Solutions",
+        desc: "Monitor your daily activity and health metrics with our Advanced Fitness Tracker Band. Tracks steps, distance, calories burned, and active minutes throughout your day. Features continuous heart rate monitoring with advanced sensors for accurate readings. Sleep tracking analyzes your sleep patterns including deep, light, and REM sleep stages. Water-resistant design allows you to wear it during workouts and even while swimming. The bright OLED display shows all your stats at a glance, and the long battery life lasts up to 7 days on a single charge. Syncs wirelessly with your smartphone to view detailed analytics and set fitness goals. Receive call and message notifications right on your wrist. Perfect for anyone looking to stay active and monitor their health progress.",
+        sold: 1850,
+        rating: 4.4,
+        reviews: 1420,
+        gallery: ["s2.png", "s2.png", "s2.png"]
+      },
+      {
+        id: 16,
+        title: "Yoga Blocks Set",
+        price: 19.99,
+        cost: 10.00,
+        img: "Yoga Blocks Set.png",
+        category: "Accessories",
+        sellerName: "Zen Wellness Shop",
+        desc: "Enhance your yoga practice with our Premium Yoga Blocks Set. Includes two high-density EVA foam blocks that provide stable support for various poses and modifications. The lightweight yet firm blocks help improve flexibility by bringing the floor closer to you, making challenging poses more accessible. Perfect for beginners learning proper alignment and advanced practitioners deepening their practice. The smooth, non-slip surface ensures secure placement during poses. Available in multiple colors to match your yoga mat. These versatile blocks can also be used for Pilates, stretching, and physical therapy exercises. Easy to clean and maintain. Compact size makes them perfect for home practice or taking to yoga classes. Essential accessory for any serious yoga practitioner.",
+        sold: 1450,
+        rating: 4.7,
+        reviews: 1120,
+        gallery: ["p2.svg.jpg", "p2.svg.jpg", "p2.svg.jpg"]
+      },
+      {
+        id: 17,
+        title: "Barbell Set 50kg",
+        price: 299.99,
+        cost: 180.00,
+        img: "Barbell Set 50kg.png",
+        category: "Equipment",
+        sellerName: "Strength Gear Co",
+        desc: "Build serious strength with our Professional Barbell Set. Includes a 7-foot Olympic barbell with rotating sleeves and a complete set of weight plates totaling 50kg. The barbell features knurled grip patterns for secure handling during heavy lifts. The weight plates are made from high-quality cast iron with a durable finish that prevents rust and corrosion. The set includes multiple plate sizes for progressive loading. Perfect for deadlifts, squats, bench presses, and Olympic lifting movements. The barbell has a weight capacity of 300kg, making it suitable for advanced lifters. Includes collars to secure plates during workouts. Ideal for home gyms and serious strength training enthusiasts who want professional-grade equipment.",
+        sold: 280,
+        rating: 4.8,
+        reviews: 210,
+        gallery: ["p5.svg.jpg", "p5.svg.jpg", "p5.svg.jpg"]
+      },
+      {
+        id: 18,
+        title: "Running Shorts",
+        price: 24.99,
+        cost: 12.00,
+        img: "Running Shorts.png",
+        category: "Clothing",
+        sellerName: "Active Wear Hub",
+        desc: "Stay comfortable during your runs with our Performance Running Shorts. Made from lightweight, moisture-wicking fabric that keeps you dry and cool even during intense workouts. The 5-inch inseam provides optimal coverage and freedom of movement. Features include an inner brief for support, zippered back pocket for keys or cards, and reflective details for visibility during early morning or evening runs. The elastic waistband with drawstring ensures a secure, comfortable fit. The breathable mesh panels enhance ventilation. Perfect for running, jogging, gym workouts, and any high-intensity cardio activities. Available in multiple colors and sizes. Machine washable and quick-drying. Designed for performance and comfort.",
+        sold: 1680,
+        rating: 4.5,
+        reviews: 1240,
+        gallery: ["p8.svg.jpg", "p8.svg.jpg", "p8.svg.jpg"]
+      },
+      {
+        id: 19,
+        title: "Medicine Ball 6kg",
+        price: 34.99,
+        cost: 18.00,
+        img: "Medicine Ball 6kg.png",
+        category: "Equipment",
+        sellerName: "Recovery Pro Shop",
+        desc: "Add functional training to your routine with our Professional Medicine Ball. The 6kg weight is perfect for core strengthening, explosive movements, and full-body workouts. Made from durable rubber construction that can withstand drops and impacts. The textured surface provides a secure grip during dynamic exercises. Perfect for slams, throws, wall balls, and rotational movements. The consistent weight distribution ensures balanced training. Ideal for CrossFit, HIIT workouts, and functional fitness training. Can be used solo or with a partner for partner exercises. The compact size makes it easy to store and transport. Suitable for intermediate to advanced fitness enthusiasts looking to add power and explosiveness to their training.",
+        sold: 890,
+        rating: 4.6,
+        reviews: 680,
+        gallery: ["s4.png", "s4.png", "s4.png"]
+      },
+      {
+        id: 20,
+        title: "Gym Bag Large",
+        price: 39.99,
+        cost: 20.00,
+        img: "Gym Bag Large.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Carry all your gym essentials in style with our Large Gym Bag. Spacious main compartment easily fits workout clothes, shoes, water bottle, and all your training gear. Features multiple pockets including a separate shoe compartment with ventilation, side pockets for water bottles, and interior organization pockets for smaller items. Made from durable, water-resistant material that protects your belongings from moisture and wear. The reinforced handles and adjustable shoulder strap provide comfortable carrying options. The sturdy zippers ensure secure closure. Perfect for gym-goers, athletes, and fitness enthusiasts who need to transport their equipment. Available in multiple colors. Easy to clean and maintain. Your perfect companion for every workout session.",
+        sold: 1250,
+        rating: 4.5,
+        reviews: 980,
+        gallery: ["s1.png", "s1.png", "s1.png"]
+      },
+      {
+        id: 21,
+        title: "Battle Ropes 15m",
+        price: 79.99,
+        cost: 45.00,
+        img: "Battle Ropes 15m.png",
+        category: "Equipment",
+        sellerName: "Fitness Pro Store",
+        desc: "Experience high-intensity full-body workouts with our Professional Battle Ropes. The 15-meter length provides ample rope for various exercises and training styles. Made from premium marine-grade rope that's durable, weather-resistant, and built to last. The heavy-duty construction can withstand intense slamming and whipping movements. Perfect for HIIT workouts, cardio training, and building explosive power. Battle rope exercises target your entire body including arms, shoulders, core, and legs. The thick diameter provides excellent grip and resistance. Ideal for outdoor training, CrossFit, and functional fitness. Can be anchored to trees, posts, or specialized anchors. Includes storage bag for easy transport. Suitable for intermediate to advanced fitness enthusiasts looking for challenging, high-intensity workouts.",
+        sold: 450,
+        rating: 4.7,
+        reviews: 340,
+        gallery: ["p3.svg.jpg", "p3.svg.jpg", "p3.svg.jpg"]
+      },
+      {
+        id: 22,
+        title: "Workout Headband",
+        price: 8.99,
+        cost: 4.00,
+        img: "Workout Headband.png",
+        category: "Accessories",
+        sellerName: "Active Wear Hub",
+        desc: "Keep sweat out of your eyes with our Premium Workout Headband. Made from moisture-wicking fabric that quickly absorbs and evaporates sweat, keeping you comfortable during intense workouts. The wide design provides excellent coverage and stays in place without slipping. The stretchy material ensures a comfortable, secure fit for all head sizes. Available in multiple colors to match your workout attire. Perfect for running, gym workouts, yoga, and any physical activity. Lightweight and breathable, you'll barely notice you're wearing it. Machine washable and quick-drying. The seamless construction prevents irritation. Essential accessory for anyone who sweats during workouts. Pack of 2 included for value.",
+        sold: 3200,
+        rating: 4.6,
+        reviews: 2450,
+        gallery: ["s6.png", "s6.png", "s6.png"]
+      },
+      {
+        id: 23,
+        title: "Rowing Machine",
+        price: 449.99,
+        cost: 280.00,
+        img: "Rowing Machine.png",
+        category: "Equipment",
+        sellerName: "Home Gym Experts",
+        desc: "Get a full-body cardio workout with our Professional Rowing Machine. Features magnetic resistance with 8 levels of adjustable intensity to suit all fitness levels. The smooth, quiet operation makes it perfect for home use without disturbing others. The comfortable padded seat glides smoothly on dual rails, and the large footplates accommodate all shoe sizes. The LCD display tracks time, distance, strokes per minute, calories burned, and heart rate. The foldable design saves space when not in use. Rowing provides an excellent low-impact cardio workout that engages your legs, core, back, and arms simultaneously. Perfect for improving cardiovascular fitness, building endurance, and burning calories. Ideal for home gyms and fitness enthusiasts seeking a comprehensive workout machine.",
+        sold: 380,
+        rating: 4.7,
+        reviews: 290,
+        gallery: ["p1.svg.jpg", "p1.svg.jpg", "p1.svg.jpg"]
+      },
+      {
+        id: 24,
+        title: "Yoga Strap",
+        price: 12.99,
+        cost: 6.00,
+        img: "Yoga Strap.png",
+        category: "Accessories",
+        sellerName: "Zen Wellness Shop",
+        desc: "Deepen your stretches and improve flexibility with our Premium Yoga Strap. Made from durable cotton webbing that's soft yet strong, providing secure support during poses. The D-ring buckle allows for easy adjustment and secure locking. The 6-foot length provides ample room for various stretching exercises and pose modifications. Perfect for assisted stretches, improving flexibility, and making challenging poses more accessible. Ideal for yoga practitioners of all levels, from beginners learning proper alignment to advanced practitioners deepening their practice. Can also be used for Pilates, physical therapy, and general stretching. Lightweight and portable, it easily fits in any yoga bag. Available in multiple colors. Essential tool for anyone serious about improving flexibility and range of motion.",
+        sold: 1980,
+        rating: 4.8,
+        reviews: 1560,
+        gallery: ["p2.svg.jpg", "p2.svg.jpg", "p2.svg.jpg"]
+      },
+      {
+        id: 25,
+        title: "Weighted Vest 10kg",
+        price: 69.99,
+        cost: 38.00,
+        img: "Weighted Vest 10kg.png",
+        category: "Equipment",
+        sellerName: "Strength Gear Co",
+        desc: "Increase workout intensity with our Adjustable Weighted Vest. Features removable weight packs allowing you to customize the load from 2kg to 10kg in 1kg increments. The ergonomic design distributes weight evenly across your torso for comfortable wear during various exercises. Made from breathable mesh material with adjustable straps for a secure, personalized fit. Perfect for adding resistance to running, walking, bodyweight exercises, and calisthenics. The weighted vest increases calorie burn and builds strength without requiring additional equipment. Ideal for athletes, military training, and fitness enthusiasts looking to intensify their workouts. The compact design doesn't restrict movement, allowing for full range of motion. Suitable for users of all fitness levels who want to take their training to the next level.",
+        sold: 620,
+        rating: 4.5,
+        reviews: 480,
+        gallery: ["s5.png", "s5.png", "s5.png"]
+      },
+      {
+        id: 26,
+        title: "Fitness Tank Top",
+        price: 22.99,
+        cost: 11.00,
+        img: "Fitness Tank Top.png",
+        category: "Clothing",
+        sellerName: "Active Wear Hub",
+        desc: "Stay cool and comfortable during intense workouts with our Performance Fitness Tank Top. Made from premium moisture-wicking fabric that pulls sweat away from your skin, keeping you dry and comfortable. The breathable mesh panels on the sides enhance ventilation for maximum airflow. The relaxed fit allows for unrestricted movement during any exercise. Features include a wide neckline for comfort, reinforced seams for durability, and tagless design to prevent irritation. Perfect for gym workouts, running, weightlifting, and any high-intensity training. Available in multiple colors and sizes. The lightweight material won't weigh you down during workouts. Machine washable and quick-drying. Designed for performance and style, this tank top is a must-have for any fitness enthusiast.",
+        sold: 2100,
+        rating: 4.6,
+        reviews: 1680,
+        gallery: ["p8.svg.jpg", "p8.svg.jpg", "p8.svg.jpg"]
+      },
+      {
+        id: 27,
+        title: "Ab Wheel Roller",
+        price: 16.99,
+        cost: 8.00,
+        img: "Ab Wheel Roller.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Build a stronger core with our Professional Ab Wheel Roller. The dual-wheel design provides stability and balance during exercises, making it suitable for beginners and advanced users. The ergonomic handles with foam padding ensure a comfortable, secure grip. The large wheels roll smoothly on any surface, and the durable construction supports users up to 150kg. Perfect for core strengthening exercises including rollouts, pikes, and various ab workouts. The compact design stores easily and is perfect for home gyms. Includes exercise guide with various workout routines for all fitness levels. Regular use helps develop a strong core, improve posture, and enhance overall stability. Lightweight and portable, take it anywhere for a quick core workout. Essential tool for anyone serious about building abdominal strength.",
+        sold: 1750,
+        rating: 4.4,
+        reviews: 1320,
+        gallery: ["s3.png", "s3.png", "s3.png"]
+      },
+      {
+        id: 28,
+        title: "Exercise Bike",
+        price: 329.99,
+        cost: 200.00,
+        img: "Exercise Bike.png",
+        category: "Equipment",
+        sellerName: "Home Gym Experts",
+        desc: "Get an effective cardio workout at home with our Magnetic Exercise Bike. Features 8 levels of magnetic resistance for smooth, quiet operation perfect for home use. The adjustable seat and handlebars accommodate users of all sizes. The large LCD display tracks time, distance, speed, calories burned, and heart rate. The weighted flywheel provides a realistic cycling experience with smooth pedaling motion. The comfortable padded seat ensures comfort during longer sessions. The transport wheels make it easy to move the bike when needed. Perfect for low-impact cardio workouts that are gentle on joints. Ideal for improving cardiovascular health, burning calories, and building leg strength. The compact design fits in most home spaces. Perfect for home gyms and anyone looking for convenient cardio training.",
+        sold: 520,
+        rating: 4.6,
+        reviews: 410,
+        gallery: ["p4.svg.jpg", "p4.svg.jpg", "p4.svg.jpg"]
+      },
+      {
+        id: 29,
+        title: "Grip Strengthener",
+        price: 9.99,
+        cost: 4.50,
+        img: "Grip Strengthener.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Build powerful grip strength with our Adjustable Grip Strengthener. Features adjustable resistance from 10kg to 60kg, allowing you to progress as your strength improves. The ergonomic design fits comfortably in your hand and targets all finger muscles. Made from durable materials that withstand repeated use. Perfect for athletes, rock climbers, musicians, and anyone looking to improve hand strength. Regular use helps prevent injuries, improves performance in sports and weightlifting, and can help with conditions like carpal tunnel. The compact size makes it perfect for use at home, office, or on the go. Includes resistance guide for progressive training. Suitable for rehabilitation and strength building. Lightweight and portable, you can train your grip anywhere, anytime. Essential tool for serious athletes and fitness enthusiasts.",
+        sold: 2400,
+        rating: 4.7,
+        reviews: 1890,
+        gallery: ["s6.png", "s6.png", "s6.png"]
+      },
+      {
+        id: 30,
+        title: "Punching Bag Stand",
+        price: 149.99,
+        cost: 85.00,
+        img: "Punching Bag Stand.png",
+        category: "Equipment",
+        sellerName: "Fitness Pro Store",
+        desc: "Set up your home boxing gym with our Heavy-Duty Punching Bag Stand. The freestanding design requires no ceiling mounting, making it perfect for any space. The sturdy steel frame supports heavy bags up to 100kg and withstands intense training sessions. The adjustable height accommodates different bag sizes and user preferences. The wide base provides excellent stability, and the weighted base can be filled with sand or water for additional support. The swivel hook allows the bag to swing naturally during workouts. Perfect for boxing training, martial arts, cardio workouts, and stress relief. Easy to assemble and disassemble for storage. The compact footprint makes it suitable for home gyms, garages, and basements. Ideal for boxing enthusiasts and anyone looking for an intense full-body workout.",
+        sold: 340,
+        rating: 4.5,
+        reviews: 260,
+        gallery: ["p1.svg.jpg", "p1.svg.jpg", "p1.svg.jpg"]
+      },
+      {
+        id: 31,
+        title: "Yoga Bolster",
+        price: 29.99,
+        cost: 15.00,
+        img: "Yoga Bolster.png",
+        category: "Accessories",
+        sellerName: "Zen Wellness Shop",
+        desc: "Support your yoga practice with our Premium Yoga Bolster. The firm yet comfortable filling provides excellent support for restorative poses, meditation, and relaxation. The rectangular shape is versatile for various uses including propping, sitting, and supporting the body during poses. Made from high-quality cotton cover that's soft, breathable, and easy to clean. The dense filling maintains its shape and provides consistent support. Perfect for yin yoga, restorative yoga, and therapeutic practices. Can also be used for Pilates, stretching, and general relaxation. The compact size makes it easy to store and transport. Available in multiple colors to match your yoga space. Essential prop for deepening your practice and finding comfort in challenging poses. Perfect for both beginners and advanced practitioners seeking support and comfort.",
+        sold: 980,
+        rating: 4.6,
+        reviews: 750,
+        gallery: ["p2.svg.jpg", "p2.svg.jpg", "p2.svg.jpg"]
+      },
+      {
+        id: 32,
+        title: "Ankle Weights 2kg",
+        price: 19.99,
+        cost: 10.00,
+        img: "Ankle Weights 2kg.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Add resistance to your workouts with our Adjustable Ankle Weights. Each weight is 1kg, and the set includes two weights for a total of 2kg. The adjustable velcro straps ensure a secure, comfortable fit for ankles of all sizes. The soft padding prevents chafing and irritation during extended use. Perfect for adding resistance to walking, running, leg lifts, and various lower body exercises. The compact design doesn't interfere with natural movement patterns. Ideal for rehabilitation, physical therapy, and strength training. Can be used during cardio workouts to increase intensity and calorie burn. The removable weight system allows for progressive training. Lightweight yet effective for building leg strength and endurance. Perfect for home workouts, gym training, and outdoor activities. Suitable for users of all fitness levels.",
+        sold: 1450,
+        rating: 4.5,
+        reviews: 1120,
+        gallery: ["s4.png", "s4.png", "s4.png"]
+      },
+      {
+        id: 33,
+        title: "Pull-Up Assist Band",
+        price: 24.99,
+        cost: 12.00,
+        img: "Pull-Up Assist Band.png",
+        category: "Accessories",
+        sellerName: "FitFlex Equipment",
+        desc: "Master pull-ups with our Professional Pull-Up Assist Band. The heavy-duty latex band provides assistance to help you complete pull-ups while building strength. Available in multiple resistance levels to match your current fitness level. The band reduces your body weight during the exercise, making pull-ups accessible to beginners and allowing advanced users to increase volume. The durable construction withstands repeated stretching and use. Perfect for home gyms, CrossFit, and bodyweight training. Can also be used for assisted dips, muscle-ups, and various bodyweight exercises. The compact design stores easily and is perfect for travel. Includes exercise guide with progression tips. Essential tool for anyone working towards their first pull-up or looking to increase pull-up volume. Suitable for all fitness levels.",
+        sold: 1120,
+        rating: 4.7,
+        reviews: 890,
+        gallery: ["p3.svg.jpg", "p3.svg.jpg", "p3.svg.jpg"]
+      },
+      {
+        id: 34,
+        title: "Workout Towel",
+        price: 11.99,
+        cost: 5.50,
+        img: "Workout Towel.png",
+        category: "Accessories",
+        sellerName: "Active Wear Hub",
+        desc: "Stay fresh during workouts with our Premium Microfiber Workout Towel. The ultra-absorbent microfiber material quickly wicks away sweat, keeping you dry and comfortable. The compact size is perfect for gym bags yet large enough to cover equipment. The lightweight design makes it easy to carry, and it dries quickly after use. The antimicrobial treatment prevents odor and bacteria buildup. Perfect for wiping down equipment, covering gym benches, and personal use during workouts. The soft texture is gentle on skin. Machine washable and durable for long-term use. Available in multiple colors. Essential accessory for maintaining hygiene at the gym and staying comfortable during intense training sessions. Pack of 2 included for value.",
+        sold: 2800,
+        rating: 4.8,
+        reviews: 2250,
+        gallery: ["s1.png", "s1.png", "s1.png"]
+      },
+      {
+        id: 35,
+        title: "Cable Machine",
+        price: 399.99,
+        cost: 240.00,
+        img: "Cable Machine.png",
+        category: "Equipment",
+        sellerName: "Home Gym Experts",
+        desc: "Build a complete home gym with our Professional Cable Machine. Features dual adjustable pulleys that can be positioned at various heights for endless exercise possibilities. The weight stack provides smooth, consistent resistance from 5kg to 80kg. Includes multiple attachments including rope, straight bar, and various handles for different exercises. Perfect for chest presses, rows, tricep extensions, bicep curls, and hundreds of other exercises. The compact design fits in most home gym spaces. The smooth cable system provides professional-grade resistance training. Ideal for building muscle, improving strength, and creating varied workout routines. Suitable for users of all fitness levels. The versatile design replaces multiple machines, making it perfect for space-constrained home gyms.",
+        sold: 290,
+        rating: 4.7,
+        reviews: 220,
+        gallery: ["p5.svg.jpg", "p5.svg.jpg", "p5.svg.jpg"]
+      },
+      {
+        id: 36,
+        title: "Yoga Wheel",
+        price: 34.99,
+        cost: 18.00,
+        img: "Yoga Wheel.png",
+        category: "Accessories",
+        sellerName: "Zen Wellness Shop",
+        desc: "Deepen your backbends and improve flexibility with our Premium Yoga Wheel. The 12-inch diameter provides excellent support for spinal extension and flexibility work. Made from high-density EVA foam with a durable outer layer that's comfortable yet supportive. The textured surface provides grip during poses. Perfect for opening the chest, stretching the spine, and improving back flexibility. Can be used for various yoga poses, stretches, and core strengthening exercises. The compact design stores easily and is perfect for home practice. Suitable for intermediate to advanced practitioners looking to deepen their backbend practice. Includes exercise guide with various poses and stretches. Essential prop for anyone working on back flexibility and spinal health. Available in multiple colors.",
+        sold: 760,
+        rating: 4.6,
+        reviews: 580,
+        gallery: ["p2.svg.jpg", "p2.svg.jpg", "p2.svg.jpg"]
+      },
+      {
+        id: 37,
+        title: "Knee Sleeves",
+        price: 18.99,
+        cost: 9.00,
+        img: "Knee Sleeves.png",
+        category: "Accessories",
+        sellerName: "Recovery Pro Shop",
+        desc: "Protect and support your knees during workouts with our Professional Knee Sleeves. Made from neoprene material that provides compression, warmth, and support to the knee joint. The breathable design prevents overheating while maintaining support. Perfect for weightlifting, running, and high-impact activities. The compression helps improve blood flow and reduces swelling. The adjustable fit ensures comfort and proper support. Ideal for athletes, fitness enthusiasts, and anyone with knee concerns. Can help prevent injuries and provide support during rehabilitation. The lightweight design doesn't restrict movement. Available in multiple sizes for proper fit. Machine washable and durable for long-term use. Essential protective gear for serious athletes and anyone looking to protect their knees during intense workouts.",
+        sold: 1680,
+        rating: 4.5,
+        reviews: 1320,
+        gallery: ["s6.png", "s6.png", "s6.png"]
+      },
+      {
+        id: 38,
+        title: "Squat Rack",
+        price: 249.99,
+        cost: 150.00,
+        img: "Squat Rack.png",
+        category: "Equipment",
+        sellerName: "Strength Gear Co",
+        desc: "Build serious lower body strength with our Heavy-Duty Squat Rack. The sturdy steel construction supports weights up to 500kg, making it suitable for advanced lifters. Features adjustable safety bars and J-hooks that can be positioned at various heights. The wide base provides excellent stability during heavy lifts. Perfect for squats, bench presses, overhead presses, and various strength training exercises. The compact design fits in most home gym spaces. Includes spotter arms for safety during heavy lifts. The powder-coated finish prevents rust and provides durability. Easy to assemble with clear instructions. Ideal for serious strength training enthusiasts who want professional-grade equipment at home. The versatile design allows for multiple exercises, making it a centerpiece of any home gym.",
+        sold: 420,
+        rating: 4.8,
+        reviews: 320,
+        gallery: ["p1.svg.jpg", "p1.svg.jpg", "p1.svg.jpg"]
+      },
+      {
+        id: 39,
+        title: "Massage Gun",
+        price: 89.99,
+        cost: 50.00,
+        img: "Massage Gun.png",
+        category: "Accessories",
+        sellerName: "Recovery Pro Shop",
+        desc: "Recover faster with our Professional Massage Gun. Features powerful percussive therapy that penetrates deep into muscle tissue to relieve tension and soreness. The variable speed control allows you to adjust intensity from gentle to intense. Includes multiple attachment heads for different muscle groups and massage techniques. The ergonomic design is easy to hold and maneuver. The long battery life provides up to 3 hours of continuous use. Perfect for post-workout recovery, reducing muscle soreness, and improving flexibility. The quiet operation makes it suitable for use anywhere. Ideal for athletes, fitness enthusiasts, and anyone dealing with muscle tension. Can help improve recovery time and reduce DOMS (Delayed Onset Muscle Soreness). The compact design is perfect for home use or taking to the gym.",
+        sold: 1950,
+        rating: 4.6,
+        reviews: 1520,
+        gallery: ["s2.png", "s2.png", "s2.png"]
+      },
+      {
+        id: 40,
+        title: "Exercise Mat",
+        price: 16.99,
+        cost: 8.00,
+        img: "Exercise Mat.png",
+        category: "Accessories",
+        sellerName: "Zen Wellness Shop",
+        desc: "Create a comfortable workout space with our Premium Exercise Mat. The extra-thick 10mm padding provides excellent cushioning for floor exercises, yoga, and stretching. Made from high-density foam that's durable and won't compress over time. The non-slip surface prevents the mat from sliding during workouts. The large size provides ample space for various exercises. Perfect for home workouts, yoga, Pilates, and general fitness. The lightweight design makes it easy to roll up and store. The smooth surface is easy to clean and maintain. Water-resistant material prevents moisture absorption. Available in multiple colors. Ideal for anyone who wants a comfortable, supportive surface for floor exercises. Essential for home gyms and apartment workouts where floor space needs protection.",
+        sold: 3200,
+        rating: 4.7,
+        reviews: 2580,
+        gallery: ["p2.svg.jpg", "p2.svg.jpg", "p2.svg.jpg"]
+      },
+      {
+        id: 100,
+        title: "Smart Electric Treadmill (3D)",
+        price: 660.71,
+        cost: 428.57,
+        img: "treadmill/Screenshot 2025-11-24 192010.png",
+        category: "Equipment",
+        sellerName: "AeroMart Fitness",
+        desc: "Premium treadmill designed for professional gym and home use. Customers can inspect the product in full 3D before purchase. Features real 3D interactive view, speed & incline control, shock absorption system, foldable design, and 2 years warranty. High-performance treadmill for home and gym use. Designed with modern fitness tracking and shock absorption technology.",
+        modelUrl: "https://sketchfab.com/models/b6b587aca0ab482782737ed139638e2a/embed",
+        sold: 150,
+        rating: 4.9,
+        reviews: 420,
+        gallery: ["treadmill/Screenshot 2025-11-24 192010.png", "treadmill/Screenshot 2025-11-24 192139.png", "treadmill/Screenshot 2025-11-24 192010.png"],
+        reviewList: [
+          { name: "Alex Morgan", rating: 5, comment: "Excellent treadmill! The 3D view helped me see exactly what I was buying. Quality is outstanding and the interactive preview was amazing.", date: "1 week ago" },
+          { name: "Jordan Smith", rating: 5, comment: "Best purchase I've made! Being able to view it in 3D before buying gave me so much confidence. The treadmill itself is fantastic.", date: "2 weeks ago" },
+          { name: "Casey Johnson", rating: 4, comment: "Great treadmill! The 3D viewer is a game-changer for online shopping. The product quality matches the preview perfectly.", date: "3 days ago" },
+          { name: "Morgan Davis", rating: 5, comment: "Amazing experience! The interactive 3D view made me feel like I was in a store. Highly recommend this product and feature.", date: "1 month ago" },
+          { name: "Riley Taylor", rating: 5, comment: "Perfect treadmill for home use. The 3D preview feature is innovative and really helped me make the right choice. Very satisfied!", date: "2 weeks ago" }
+        ]
+      }
+    ];
+
+    // Add reviews to additional products if they don't have them
+    additionalProducts.forEach(product => {
+      if (!product.reviewList) {
+        product.reviewList = generateReviews(product.title, product.rating);
+      }
+    });
+
+    // Function to generate reviews based on product (ratings between 3-5)
+    function generateReviews(productTitle, avgRating) {
+      const names = ["Alex Morgan", "Tyler Brooks", "Jordan Smith", "Casey Johnson", "Morgan Davis", "Riley Taylor", "Sam Williams"];
+      const comments = [
+        `Excellent product! ${productTitle} exceeded my expectations. Great quality and value for money.`,
+        `Good quality ${productTitle.toLowerCase()}. Works as described and meets my needs. Would recommend.`,
+        `Amazing ${productTitle.toLowerCase()}! Very satisfied with the purchase. Quality is outstanding.`,
+        `Solid product. The ${productTitle.toLowerCase()} is well-made and performs well. Good value.`,
+        `Love this ${productTitle.toLowerCase()}! Great features and quality. Highly recommend to others.`,
+        `Very happy with my purchase. The ${productTitle.toLowerCase()} is durable and performs excellently.`,
+        `Great product for the price. The ${productTitle.toLowerCase()} meets all my expectations.`
+      ];
+      const dates = ["1 week ago", "2 weeks ago", "3 days ago", "1 month ago", "3 weeks ago", "5 days ago"];
+
+      const numReviews = 3 + Math.floor(Math.random() * 3); // 3-5 reviews
+      const reviews = [];
+
+      for (let i = 0; i < numReviews; i++) {
+        // Generate rating between 3-5, weighted towards the average
+        let rating;
+        if (avgRating >= 4.5) {
+          rating = 4 + (Math.random() > 0.3 ? 1 : 0); // Mostly 4-5
+        } else if (avgRating >= 4.0) {
+          rating = 3 + Math.floor(Math.random() * 2) + (Math.random() > 0.4 ? 1 : 0); // 3-5, mostly 4-5
+        } else {
+          rating = 3 + Math.floor(Math.random() * 2); // 3-4
+        }
+        rating = Math.min(5, Math.max(3, rating)); // Ensure 3-5 range
+
+        reviews.push({
+          name: names[Math.floor(Math.random() * names.length)],
+          rating: rating,
+          comment: comments[Math.floor(Math.random() * comments.length)],
+          date: dates[Math.floor(Math.random() * dates.length)]
+        });
+      }
+
+      return reviews;
+    }
+
+    // Extend PRODUCTS array for index page only
+    PRODUCTS.push(...additionalProducts);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderHeader();
+      wireFilters("#cat-wrap", "#product-grid");
+      applyFilters("#product-grid");
+
+      // Initialize sort by filter
+      const sortSelect = document.getElementById("sort-by-select");
+      if (sortSelect) {
+        const currentSort = localStorage.getItem("price_sort") || "none";
+        sortSelect.value = currentSort;
+
+        sortSelect.addEventListener("change", (e) => {
+          localStorage.setItem("price_sort", e.target.value);
+          window.dispatchEvent(new CustomEvent("price:sort", { detail: e.target.value }));
+          applyFilters("#product-grid");
+        });
+      }
+
+      // Initialize Image Slider
+      let currentSlide = 0;
+      const totalSlides = document.querySelectorAll('#slider-track .slider-slide').length;
+      const sliderTrack = document.getElementById("slider-track");
+      const prevBtn = document.getElementById("slider-prev");
+      const nextBtn = document.getElementById("slider-next");
+      const dotsContainer = document.getElementById("slider-dots");
+
+      if (sliderTrack && prevBtn && nextBtn && dotsContainer) {
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement("div");
+          dot.className = "slider-dot" + (i === 0 ? " active" : "");
+          dot.addEventListener("click", () => goToSlide(i));
+          dotsContainer.appendChild(dot);
+        }
+
+        function updateSlider() {
+          sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+          // Update dots
+          dotsContainer.querySelectorAll(".slider-dot").forEach((dot, index) => {
+            dot.classList.toggle("active", index === currentSlide);
+          });
+        }
+
+        function goToSlide(index) {
+          currentSlide = index;
+          updateSlider();
+        }
+
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateSlider();
+        }
+
+        function prevSlide() {
+          currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          updateSlider();
+        }
+
+        prevBtn.addEventListener("click", prevSlide);
+        nextBtn.addEventListener("click", nextSlide);
+
+        // Auto-rotate every 4 seconds
+        let autoSlideInterval = setInterval(nextSlide, 4000);
+
+        // Pause on hover
+        const slider = document.getElementById("image-slider");
+        if (slider) {
+          slider.addEventListener("mouseenter", () => clearInterval(autoSlideInterval));
+          slider.addEventListener("mouseleave", () => {
+            autoSlideInterval = setInterval(nextSlide, 4000);
+          });
+        }
+      }
+    });
+  </script>
+
+
+
+  <!-- Notification Overlay -->
+  <div class="notification-overlay" id="notification-overlay">
+    <div class="notification-box">
+      <div class="notification-content" id="notification-content">
+        <div class="notification-icon" id="notification-icon"></div>
+        <p class="notification-text" id="notification-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <!--Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-copyright">© 2025 AeroMart</div>
+    </div>
+  </footer>
+</body>
+
+</html>

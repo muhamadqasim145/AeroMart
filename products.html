@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><title>Products - AeroMart</title><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container">
+    <h2>Products</h2>
+    <div id="cat-wrap" style="margin-top:12px"></div>
+    <div id="product-grid" class="grid resp" style="margin-top:18px"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><div class="small muted">© 2025 AeroMart</div></div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+      renderHeader();
+      wireFilters("#cat-wrap", "#product-grid");
+      applyFilters("#product-grid");
+    });
+  </script>
+  <script src="keyboard-navigation.js"></script>
+</body>
+</html>

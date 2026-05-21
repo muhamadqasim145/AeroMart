@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><title>Product - AeroMart</title><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container" id="product-area"></main>
+
+  <footer class="footer">
+    <div class="container"><div class="small muted">© 2025 AeroMart</div></div>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    document.addEventListener("DOMContentLoaded", ()=>{
+      renderHeader();
+      if(id) renderProductDetails(id, "#product-area");
+      else document.querySelector("#product-area").innerHTML = "<div class='center'>No product selected</div>";
+    });
+  </script>
+  <script src="keyboard-navigation.js"></script>
+</body>
+</html>

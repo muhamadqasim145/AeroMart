@@ -1,0 +1,1132 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Wishlist - AeroMart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e8ba3 50%, #b8c5d1 75%, #e8f0f8 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(55, 232, 235, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ensure logo size matches index.html */
+    .logo {
+      width: 100px !important;
+      height: 100px !important;
+    }
+
+    .logo img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+    }
+
+    /* AeroMart brand label - consistent with index.html */
+    .brand>div>div {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 16px !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    /* Enhanced View Cart Button - Larger and more prominent */
+    .floating-cart-btn {
+      min-width: 180px !important;
+      height: 64px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      padding: 0 24px !important;
+      border-radius: 32px !important;
+      box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5) !important;
+      border-width: 3px !important;
+      gap: 12px !important;
+      animation: cartPulse 2s ease-in-out infinite;
+    }
+
+    .floating-cart-btn svg {
+      width: 24px !important;
+      height: 24px !important;
+    }
+
+    .floating-cart-count {
+      width: 26px !important;
+      height: 26px !important;
+      font-size: 13px !important;
+      top: 4px !important;
+      right: 4px !important;
+      border-width: 3px !important;
+    }
+
+    @keyframes cartPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5), 0 0 0 0 rgba(55, 232, 235, 0.7);
+      }
+
+      50% {
+        box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5), 0 0 0 8px rgba(55, 232, 235, 0);
+      }
+    }
+
+    .floating-cart-btn:hover {
+      transform: translateY(-6px) scale(1.08) !important;
+      box-shadow: 0 14px 40px rgba(55, 232, 235, 0.6) !important;
+    }
+
+    @media (max-width: 768px) {
+      .floating-cart-btn {
+        min-width: 160px !important;
+        height: 58px !important;
+        font-size: 15px !important;
+        padding: 0 20px !important;
+      }
+
+      .floating-cart-btn svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .floating-cart-count {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Ensure buyer profile and My Orders are fully visible */
+    .user-menu {
+      min-width: 180px !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+    }
+
+    .user-info {
+      min-width: 120px !important;
+      flex: 1 !important;
+      width: auto !important;
+      overflow: visible !important;
+    }
+
+    .user-name {
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .user-role {
+      overflow: visible !important;
+      text-overflow: clip !important;
+      width: auto !important;
+    }
+
+    .my-orders-link {
+      white-space: nowrap !important;
+      overflow: visible !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Footer styling - matching seller.html */
+    .footer {
+      background: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer .container {
+      text-align: center;
+      padding: 0;
+    }
+
+    .footer .muted,
+    .footer .small {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-size: 16px !important;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Search bar styling - matching index.html */
+    .search {
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(55, 232, 235, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      max-width: 700px !important;
+      flex: 1;
+    }
+
+    .search input {
+      color: #1e3c72 !important;
+      font-size: 15px;
+    }
+
+    .search input::placeholder {
+      color: #546e7a !important;
+    }
+
+    /* Clear button styling */
+    .search #clear-search {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      border: 2px solid rgba(55, 232, 235, 0.3);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .search #clear-search:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(55, 232, 235, 0.4);
+    }
+
+    .wishlist-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    .wishlist-header {
+      text-align: center;
+      margin-bottom: 40px;
+      color: white;
+    }
+
+    .wishlist-header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .wishlist-header p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .continue-shopping-btn {
+      position: absolute;
+      top: 30px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 20px;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+      border: none;
+    }
+
+    .continue-shopping-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.4);
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .wishlist-item {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wishlist-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .wishlist-item-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: #f8f9fa;
+    }
+
+    .wishlist-item-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0 0 8px 0;
+      line-height: 1.3;
+    }
+
+    .wishlist-item-category {
+      font-size: 13px;
+      color: #546e7a;
+      margin: 0 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wishlist-item-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin: 0 0 16px 0;
+    }
+
+    .wishlist-item-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .wishlist-item-actions button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .add-to-cart-btn {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+    }
+
+    .add-to-cart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    .remove-wishlist-btn {
+      background: #f5f7fa;
+      color: #f44336;
+      border: 1px solid #e5e7eb;
+    }
+
+    .remove-wishlist-btn:hover {
+      background: #fee2e2;
+      border-color: #f44336;
+    }
+
+    .empty-wishlist {
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .empty-wishlist-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
+      opacity: 0.5;
+    }
+
+    .empty-wishlist h2 {
+      font-size: 28px;
+      color: #1e3c72;
+      margin: 0 0 12px 0;
+    }
+
+    .empty-wishlist p {
+      font-size: 16px;
+      color: #6b7280;
+      margin: 0 0 24px 0;
+    }
+
+    .empty-wishlist a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .empty-wishlist a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .continue-shopping-btn {
+        position: static;
+        margin-bottom: 20px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .wishlist-header h1 {
+        font-size: 32px;
+      }
+    }
+
+    /* Notification System */
+    .notification-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+
+    .notification-overlay.show {
+      display: flex;
+    }
+
+    .notification-box {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      min-width: 300px;
+      max-width: 500px;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .notification-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .notification-icon {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background: #37e8eb;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .notification-icon::before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .notification-icon.error {
+      background: #f44336;
+    }
+
+    .notification-icon.error::before {
+      content: '✗';
+    }
+
+    .notification-icon.warning {
+      background: #ff9800;
+    }
+
+    .notification-icon.warning::before {
+      content: '⚠';
+    }
+
+    .notification-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    /* Responsive styles for notification/help screens */
+    @media (max-width: 768px) {
+      .notification-overlay {
+        padding: 20px;
+      }
+
+      .notification-box {
+        padding: 30px 24px;
+        min-width: auto;
+        max-width: 90%;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .notification-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .notification-icon::before {
+        font-size: 20px;
+      }
+
+      .notification-text {
+        font-size: 16px;
+      }
+
+      .notification-content {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .notification-overlay {
+        padding: 16px;
+      }
+
+      .notification-box {
+        padding: 24px 20px;
+        max-width: 95%;
+        border-radius: 12px;
+      }
+
+      .notification-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .notification-icon::before {
+        font-size: 18px;
+      }
+
+      .notification-text {
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .notification-content {
+        gap: 10px;
+      }
+    }
+
+    /* Quick View Modal Styles - Same as index.html */
+    .modal {
+      display: none !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      backdrop-filter: blur(5px) !important;
+      z-index: 9999 !important;
+      padding: 20px !important;
+      opacity: 0;
+      transition: opacity 0.3s ease !important;
+    }
+
+    .modal.open {
+      display: flex !important;
+      opacity: 1 !important;
+    }
+
+    .quick-view-modal {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr !important;
+      grid-template-rows: 1fr !important;
+      gap: 20px !important;
+      max-width: 1400px !important;
+      max-height: 90vh !important;
+      width: 95% !important;
+      background: rgba(255, 255, 255, 0.98) !important;
+      backdrop-filter: blur(10px);
+      border-radius: 16px !important;
+      padding: 24px !important;
+      position: relative !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+      margin: 0 auto !important;
+      transform: scale(0.95);
+      transition: transform 0.3s ease !important;
+      overflow-y: auto !important;
+      align-items: stretch !important;
+    }
+
+    .modal.open .quick-view-modal {
+      transform: scale(1) !important;
+    }
+
+    .quick-view-left {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px !important;
+      grid-column: 1;
+      height: 100%;
+      min-height: 750px !important;
+      max-height: 850px !important;
+      width: 100% !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .quick-view-left .image-zoom-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .quick-view-left img {
+      width: auto !important;
+      max-width: 100% !important;
+      height: auto !important;
+      max-height: 100% !important;
+      min-height: 750px !important;
+      max-height: 850px !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      border-radius: 8px;
+      display: block;
+      margin: auto;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+
+    /* Zoom Controls */
+    .zoom-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      z-index: 10;
+      pointer-events: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .zoom-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      border: 2px solid rgba(55, 232, 235, 0.5);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4);
+      pointer-events: all;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .zoom-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      border-color: rgba(55, 232, 235, 0.8);
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5);
+    }
+
+    .zoom-btn:active {
+      transform: scale(0.95);
+    }
+
+    .quick-view-right {
+      display: flex !important;
+      flex-direction: column !important;
+      grid-column: 2;
+      gap: 8px !important;
+      height: 100%;
+      align-self: stretch !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    #qm-reviews {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    #qm-reviews>div {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      margin: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .quick-view-right>div {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .quick-view-right h2 {
+      color: #1e3c72 !important;
+      margin: 0 0 4px 0 !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+    }
+
+    .quick-view-right p {
+      line-height: 1.5 !important;
+      color: #2c3e50 !important;
+      font-size: 12px !important;
+      margin: 0 !important;
+    }
+
+    #qm-desc {
+      line-height: 1.6 !important;
+      color: #2c3e50 !important;
+      font-size: 15px !important;
+      margin: 0 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 6;
+      line-clamp: 6;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .modal-close-btn {
+      position: absolute !important;
+      top: 8px !important;
+      right: 8px !important;
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      border: none !important;
+      background: rgba(30, 60, 114, 0.9) !important;
+      color: white !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 22px !important;
+      font-weight: bold !important;
+      z-index: 100 !important;
+      transition: all 0.2s ease !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(30, 60, 114, 1) !important;
+      transform: scale(1.1) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .color-option {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 3px solid #ccc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0 !important;
+      margin: 0;
+      background: inherit !important;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-option.selected {
+      border-color: #1e3c72 !important;
+      border-width: 4px !important;
+      box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2) !important;
+    }
+
+    .qty-selector input {
+      background: white;
+      color: #1e3c72;
+      font-weight: 600;
+    }
+
+    .qty-selector input:focus {
+      outline: none;
+      border-color: #1e3c72 !important;
+    }
+
+    /* Price styling to match home page */
+    .quick-view-right .price {
+      color: #1e3c72 !important;
+      font-weight: 700 !important;
+      font-size: 20px !important;
+    }
+
+    /* Button styles for Buy Now - Dark blue with white text */
+    #qm-buy-now {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #qm-buy-now:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-buy-now svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Button styles for Add to Cart - Dark blue with white text */
+    #qm-add {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #qm-add:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-add svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Quantity selector button styles - Dark blue with white icons */
+    #qm-qty-dec,
+    #qm-qty-inc {
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%) !important;
+      border: 2px solid rgba(55, 232, 235, 0.5) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    #qm-qty-dec:hover,
+    #qm-qty-inc:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      border-color: rgba(55, 232, 235, 0.8) !important;
+      transform: scale(1.05) !important;
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-qty-dec svg,
+    #qm-qty-inc svg {
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Start Chat Button Styling */
+    #qm-start-chat-btn {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      padding: 14px 24px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 16px rgba(42, 82, 152, 0.35) !important;
+      letter-spacing: 0.3px !important;
+    }
+
+    #qm-start-chat-btn:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(55, 232, 235, 0.5) !important;
+    }
+
+    #qm-start-chat-btn svg {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    @media (max-width: 968px) {
+      .quick-view-modal {
+        grid-template-columns: 1fr !important;
+        max-height: 95vh !important;
+      }
+
+      .quick-view-left {
+        min-height: 400px !important;
+        max-height: 500px !important;
+      }
+
+      .quick-view-left img {
+        min-height: 400px !important;
+        max-height: 500px !important;
+      }
+
+      .quick-view-right {
+        grid-column: 1 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <div class="wishlist-container">
+    <a href="index.html" class="continue-shopping-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+      Continue Shopping
+    </a>
+
+    <div class="wishlist-header">
+      <h1>
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="#f44336" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+        My Wishlist
+      </h1>
+      <p>Save your favorite products for later</p>
+    </div>
+
+    <div id="wishlist-items" class="wishlist-grid">
+      <!-- Wishlist items will be rendered here -->
+    </div>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="main.js"></script>
+  <script>
+    function renderWishlist() {
+      const container = document.getElementById('wishlist-items');
+      if (!container) return;
+
+      // getWishlist() now returns cleaned list automatically
+      const wishlist = getWishlist();
+
+      // Filter out items that don't exist in PRODUCTS
+      const validItems = wishlist.filter(item => {
+        return item && item.id && PRODUCTS.find(p => p.id === item.id);
+      });
+
+      // Update wishlist if invalid items were found
+      if (validItems.length !== wishlist.length) {
+        saveWishlist(validItems);
+      }
+
+      if (validItems.length === 0) {
+        container.innerHTML = `
+          <div class="empty-wishlist" style="grid-column: 1 / -1;">
+            <svg class="empty-wishlist-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>Your Wishlist is Empty</h2>
+            <p>Start adding products you love to your wishlist!</p>
+            <a href="index.html">Browse Products</a>
+          </div>
+        `;
+        updateWishlistCount();
+        return;
+      }
+
+      container.innerHTML = validItems.map(item => {
+        const product = PRODUCTS.find(p => p.id === item.id || p.id === parseInt(item.id));
+        if (!product) return '';
+
+        const productId = product.id;
+
+        return `
+          <div class="wishlist-item" data-product-id="${productId}">
+            <img src="${item.img}" alt="${item.title}" class="wishlist-item-image">
+            <h3 class="wishlist-item-title">${item.title}</h3>
+            <div class="wishlist-item-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              ${item.category}
+            </div>
+            <div class="wishlist-item-price">$${item.price.toFixed(2)}</div>
+            <div class="wishlist-item-actions">
+              <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCartFromWishlist(${product.id});">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add to Cart
+              </button>
+              <button class="remove-wishlist-btn" onclick="event.stopPropagation(); removeFromWishlist(${product.id}); renderWishlist(); updateWishlistCount();">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Remove
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Make entire wishlist items clickable (like home page) - open quick view modal
+      container.querySelectorAll('.wishlist-item').forEach(item => {
+        const productId = parseInt(item.getAttribute('data-product-id')) || item.getAttribute('data-product-id');
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', (e) => {
+          // Don't open modal if clicking on buttons
+          if (!e.target.closest('.wishlist-item-actions') && !e.target.closest('button')) {
+            openProductFromWishlist(productId);
+          }
+        });
+      });
+
+      // Update count after rendering to ensure accuracy
+      updateWishlistCount();
+    }
+
+    function addToCartFromWishlist(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (product) {
+        addToCart(product, 1);
+        showBuyerNotification('Added to Cart!', 'success', 2000);
+      }
+    }
+
+    function openProductFromWishlist(productId) {
+      // Find product by ID - try multiple comparison methods
+      const productIdNum = typeof productId === 'string' ? parseInt(productId) : productId;
+
+      // Try to find product with various ID comparisons
+      let product = PRODUCTS.find(p => {
+        return p.id === productIdNum ||
+          p.id === productId ||
+          parseInt(p.id) === productIdNum ||
+          parseInt(p.id) === parseInt(productId) ||
+          String(p.id) === String(productId);
+      });
+
+      if (product) {
+        // Open the exact same quick view modal as home page
+        if (typeof openQuick === 'function') {
+          openQuick(product);
+        } else {
+          console.error('openQuick function not available');
+          showBuyerNotification('Unable to open product details', 'error', 2000);
+        }
+      } else {
+        console.error('Product not found with ID:', productId, 'Type:', typeof productId);
+        console.log('Available product IDs:', PRODUCTS.map(p => ({ id: p.id, type: typeof p.id })));
+        showBuyerNotification('Product not found', 'error', 2000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeader();
+      renderWishlist();
+      updateWishlistCount();
+    });
+  </script>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="small muted">© 2025 AeroMart</div>
+    </div>
+  </footer>
+  <script src="keyboard-navigation.js"></script>
+</body>
+
+</html>

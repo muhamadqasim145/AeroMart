@@ -1,0 +1,2407 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Login - AeroMart</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 25%, #7e8ba3 50%, #b8c5d1 75%, #e8f0f8 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(55, 232, 235, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .login-page-header {
+      background: transparent;
+      padding: 0;
+      margin-bottom: 0;
+      border: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    .login-page-header .header-content {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .login-page-header .logo {
+      width: 200px;
+      height: 85px;
+      display: flex;
+      align-items: center;
+      cursor: default;
+      padding: 8px 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .login-page-header .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 100vh;
+      padding: 0 20px 60px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Role Selection Screen */
+    .role-selection-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 100vh;
+      padding: 0 20px 60px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .role-selection-screen.hidden {
+      display: none;
+    }
+
+    .role-selection-card {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 40px 36px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .role-selection-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .role-selection-header h1 {
+      margin: 0 0 8px 0;
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e3c72;
+      letter-spacing: -0.5px;
+    }
+
+    .role-selection-header p {
+      margin: 0;
+      font-size: 15px;
+      color: #5a6c7d;
+    }
+
+    .role-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .role-option {
+      background: #f8f9fa;
+      border: 2px solid #d0d7de;
+      border-radius: 12px;
+      padding: 24px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .role-option:hover {
+      border-color: #2a5298;
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.15);
+    }
+
+    .role-option.selected {
+      border-color: #2a5298;
+      background: linear-gradient(135deg, rgba(42, 82, 152, 0.1) 0%, rgba(30, 60, 114, 0.05) 100%);
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.2);
+    }
+
+    .role-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .role-option.selected .role-icon {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+    }
+
+    .role-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+    }
+
+    .role-description {
+      font-size: 13px;
+      color: #5a6c7d;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .login-form-container.hidden {
+      display: none;
+    }
+
+    /* Seller Interface */
+    .seller-interface {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 100vh;
+      padding: 0 20px 60px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .seller-interface.hidden {
+      display: none;
+    }
+
+    .seller-card {
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 40px 36px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .seller-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .seller-header h1 {
+      margin: 0 0 8px 0;
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e3c72;
+      letter-spacing: -0.5px;
+    }
+
+    .seller-header p {
+      margin: 0;
+      font-size: 15px;
+      color: #5a6c7d;
+    }
+
+    .seller-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .seller-feature {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .seller-feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    .seller-feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+    }
+
+    .role-loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .role-loading-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .role-loading-box {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 32px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      min-width: 300px;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    .role-loading-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .role-loading-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+    }
+
+    .welcome-message {
+      margin-bottom: 24px;
+      text-align: center;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 48px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .welcome-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 40px 36px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .login-header {
+      margin-bottom: 32px;
+    }
+
+    .login-header h1 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: 700;
+      color: #1e3c72;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2a5298;
+      margin-left: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-label-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      color: #5a6c7d;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .form-input {
+      border-radius: 8px;
+      padding: 12px 14px 12px 42px;
+      background: #f8f9fa;
+      border: 2px solid #d0d7de;
+      color: #000000;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #email.form-input,
+    #password.form-input,
+    #seller-email.form-input,
+    #seller-password.form-input {
+      padding-left: 56px;
+    }
+
+    .form-input:-webkit-autofill,
+    .form-input:-webkit-autofill:hover,
+    .form-input:-webkit-autofill:focus {
+      -webkit-text-fill-color: #000000;
+      -webkit-box-shadow: 0 0 0px 1000px #f8f9fa inset;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .form-input::placeholder {
+      color: #546e7a;
+    }
+
+    .form-input:focus {
+      border-color: #37e8eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(55, 232, 235, 0.15);
+    }
+
+    .form-input.error {
+      border-color: #c40000;
+      box-shadow: 0 0 0 3px rgba(196, 0, 0, .1);
+    }
+
+    .error-message {
+      color: #c40000;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .forgot-password {
+      font-size: 12px;
+      color: #2a5298;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .forgot-password-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .forgot-password:hover {
+      color: #37e8eb;
+      text-decoration: underline;
+      background-color: rgba(55, 232, 235, 0.08);
+      font-weight: 600;
+    }
+
+    .form-actions {
+      display: grid;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #37e8eb 0%, #2a5298 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(55, 232, 235, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+      color: #546e7a;
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(139, 157, 195, 0.3), transparent);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.9);
+      color: #2a5298;
+      border: 2px solid #2a5298;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #2a5298;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+
+    .login-footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(139, 157, 195, 0.2);
+      text-align: center;
+    }
+
+    .login-footer-text {
+      font-size: 12px;
+      color: #546e7a;
+      margin: 0;
+    }
+
+    .login-footer-link {
+      color: #2a5298;
+      text-decoration: none;
+    }
+
+    .login-footer-link:hover {
+      color: #37e8eb;
+      text-decoration: underline;
+    }
+
+    .login-message-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+    .login-message-overlay.show {
+      display: flex;
+    }
+
+    .login-message-box {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      min-width: 300px;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .login-message-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e3c72;
+      margin: 0;
+      display: inline-block;
+    }
+
+    .login-message-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .login-message-content.success {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .login-spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(30, 60, 114, 0.2);
+      border-top-color: #2a5298;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .login-success-icon {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #37e8eb;
+      border-radius: 50%;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .login-success-icon::before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .forgot-password-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+
+    .forgot-password-modal.show {
+      display: flex;
+    }
+
+    .forgot-password-card {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      min-width: 400px;
+      max-width: 500px;
+      width: 90%;
+      animation: fadeInScale 0.3s ease;
+    }
+
+    .forgot-password-card h2 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1e3c72;
+    }
+
+    .forgot-password-card p {
+      margin: 0 0 24px 0;
+      color: #5a6c7d;
+      font-size: 14px;
+    }
+
+    .forgot-password-step {
+      display: none;
+    }
+
+    .forgot-password-step.active {
+      display: block;
+    }
+
+    .otp-input-group {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .otp-input {
+      width: 100%;
+      padding: 12px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      border: 2px solid #d0d7de;
+      border-radius: 8px;
+      background: #f8f9fa;
+      color: #000000 !important;
+      transition: all 0.3s ease;
+      -webkit-text-fill-color: #000000 !important;
+    }
+
+    .otp-input:focus {
+      border-color: #37e8eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(55, 232, 235, 0.15);
+      outline: none;
+      color: #000000 !important;
+      -webkit-text-fill-color: #000000 !important;
+    }
+
+    .otp-input::placeholder {
+      color: #546e7a;
+      font-size: 16px;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px;
+      color: #37e8eb;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 0 16px 40px 16px;
+      }
+
+      .role-selection-screen {
+        padding: 0 16px 40px 16px;
+      }
+
+      .login-card {
+        padding: 28px 24px;
+      }
+
+      .role-selection-card {
+        padding: 28px 24px;
+      }
+
+      .login-header h1 {
+        font-size: 32px;
+      }
+
+      .role-selection-header h1 {
+        font-size: 24px;
+      }
+
+      .role-options {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .role-option {
+        padding: 20px 16px;
+      }
+
+      .role-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+      }
+
+      .role-title {
+        font-size: 16px;
+      }
+
+      .role-description {
+        font-size: 12px;
+      }
+
+      .seller-card {
+        padding: 28px 24px;
+      }
+
+      .seller-header h1 {
+        font-size: 24px;
+      }
+
+      .seller-features {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .seller-feature {
+        padding: 16px;
+      }
+
+      .seller-feature-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .seller-feature-title {
+        font-size: 13px;
+      }
+
+      .login-page-header .logo {
+        width: 160px;
+        height: 68px;
+        padding: 6px 0;
+      }
+
+      .welcome-message {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      .welcome-icon {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="login-page-header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="AeroMart.png" alt="AeroMart">
+      </div>
+    </div>
+  </header>
+
+  <!-- Role Selection Screen -->
+  <main class="role-selection-screen" id="role-selection-screen">
+    <h1 class="welcome-message">
+      <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+          fill="currentColor" />
+      </svg>
+      Welcome to AeroMart
+    </h1>
+    <div class="role-selection-card">
+      <div class="role-selection-header">
+        <h1>Choose Your Role</h1>
+        <p>Select how you want to access AeroMart</p>
+      </div>
+      <div class="role-options">
+        <div class="role-option" data-role="buyer">
+          <div class="role-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.15.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                fill="currentColor" />
+            </svg>
+          </div>
+          <h3 class="role-title">Buyer</h3>
+          <p class="role-description">Shop for products and make purchases</p>
+        </div>
+        <div class="role-option" data-role="seller">
+          <div class="role-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="role-title">Seller</h3>
+          <p class="role-description">Manage your store and sell products</p>
+        </div>
+      </div>
+      <button class="btn-primary" id="continue-role-btn" style="width: 100%; opacity: 0.5; cursor: not-allowed;"
+        disabled>Continue</button>
+    </div>
+  </main>
+
+  <!-- Seller Interface -->
+  <main class="seller-interface hidden" id="seller-interface">
+    <h1 class="welcome-message">
+      <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+        <path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      Welcome to AeroMart
+    </h1>
+    <div class="seller-card">
+      <div class="seller-header">
+        <h1>Seller Dashboard</h1>
+        <p>Manage your store and grow your business</p>
+      </div>
+      <div class="seller-features">
+        <div class="seller-feature">
+          <div class="seller-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="seller-feature-title">Manage Products</h3>
+        </div>
+        <div class="seller-feature">
+          <div class="seller-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="seller-feature-title">Track Sales</h3>
+        </div>
+        <div class="seller-feature">
+          <div class="seller-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="seller-feature-title">View Customers</h3>
+        </div>
+        <div class="seller-feature">
+          <div class="seller-feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3h18v18H3zM9 9h6v6H9z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="seller-feature-title">Analytics</h3>
+        </div>
+      </div>
+      <form id="seller-login-form" class="login-form">
+        <div class="form-group">
+          <label for="seller-email" class="form-label">
+            <svg class="form-label-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Email or mobile phone number
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <input class="form-input" id="seller-email" type="text" placeholder="Enter email/phone number" required
+              autocomplete="username" style="color: #000000 !important;">
+          </div>
+          <span class="error-message" id="seller-email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label for="seller-password" class="form-label">
+              <svg class="form-label-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              Password
+            </label>
+            <a href="#" class="forgot-password" id="seller-forgot-password">
+              <svg class="forgot-password-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M15 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3m-5 0H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4m4 0V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2m4 0h4"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Forgot your password?
+            </a>
+          </div>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <input class="form-input" id="seller-password" type="password" placeholder="Enter your password" required
+              autocomplete="current-password" style="color: #000000 !important;">
+          </div>
+          <span class="error-message" id="seller-password-error"></span>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Sign in as Seller
+          </button>
+
+          <div class="divider">New to AeroMart?</div>
+
+          <button class="btn-secondary" type="button" id="seller-create-account-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Create your Seller account
+          </button>
+
+          <button class="btn-secondary" type="button" id="back-to-role-selection" style="margin-top: 8px;">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Back to Role Selection
+          </button>
+        </div>
+      </form>
+
+      <div class="login-footer">
+        <p class="login-footer-text">
+          By continuing, you agree to AeroMart's
+          <a href="#" class="login-footer-link">Conditions of Use</a> and
+          <a href="#" class="login-footer-link">Privacy Notice</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Role Loading Overlay -->
+  <div class="role-loading-overlay" id="role-loading-overlay">
+    <div class="role-loading-box">
+      <div class="role-loading-content">
+        <span class="login-spinner"></span>
+        <p class="role-loading-text" id="role-loading-text">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Form Container -->
+  <main class="login-container login-form-container hidden" id="login-form-container">
+    <h1 class="welcome-message">
+      <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+          fill="currentColor" />
+      </svg>
+      Welcome to AeroMart
+    </h1>
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Sign in</h1>
+      </div>
+
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <svg class="form-label-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Email or mobile phone number
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <input class="form-input" id="email" type="text" placeholder="Enter email/phone number" required
+              autocomplete="username" style="color: #000000 !important;">
+          </div>
+          <span class="error-message" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label for="password" class="form-label">
+              <svg class="form-label-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+              Password
+            </label>
+            <a href="#" class="forgot-password" id="buyer-forgot-password">
+              <svg class="forgot-password-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M15 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-3m-5 0H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4m4 0V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2m4 0h4"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Forgot your password?
+            </a>
+          </div>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <input class="form-input" id="password" type="password" placeholder="Enter your password" required
+              autocomplete="current-password" style="color: #000000 !important;">
+          </div>
+          <span class="error-message" id="password-error"></span>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Sign in
+          </button>
+
+          <div class="divider">New to AeroMart?</div>
+
+          <button class="btn-secondary" type="button" id="create-account-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Create your AeroMart account
+          </button>
+
+          <button class="btn-secondary" type="button" id="back-to-role-buyer" style="margin-top: 8px;">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Back to Role Selection
+          </button>
+        </div>
+      </form>
+
+      <div class="login-footer">
+        <p class="login-footer-text">
+          By continuing, you agree to AeroMart's
+          <a href="#" class="login-footer-link">Conditions of Use</a> and
+          <a href="#" class="login-footer-link">Privacy Notice</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <div class="login-message-overlay" id="login-message-overlay">
+    <div class="login-message-box">
+      <div class="login-message-content" id="login-message-content">
+        <span class="login-spinner"></span>
+        <p class="login-message-text" id="login-message-text">Logging in...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="forgot-password-modal" id="forgot-password-modal">
+    <div class="forgot-password-card">
+      <!-- Step 1: Enter Email -->
+      <div class="forgot-password-step active" id="step-email">
+        <h2>Reset Password</h2>
+        <p>Enter your email or phone number to receive an OTP</p>
+        <form id="forgot-email-form" class="login-form">
+          <div class="form-group">
+            <label for="forgot-email" class="form-label">Email or mobile phone number</label>
+            <input class="form-input" id="forgot-email" type="text" placeholder="Enter email/phone number" required
+              autocomplete="username" style="color: #000000 !important;">
+            <span class="error-message" id="forgot-email-error"></span>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Send OTP</button>
+            <button class="btn-secondary" type="button" id="cancel-forgot">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2: Enter OTP -->
+      <div class="forgot-password-step" id="step-otp">
+        <h2>Enter OTP</h2>
+        <p>We've sent a 6-digit OTP to <span id="otp-email-display" style="font-weight: 600; color: #1e3c72;"></span>
+        </p>
+        <div class="success-message" id="otp-sent-message" style="display: none;">
+          OTP has been sent!
+        </div>
+        <form id="otp-form" class="login-form">
+          <div class="form-group">
+            <label class="form-label">Enter 6-digit OTP</label>
+            <div class="otp-input-group">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+              <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required
+                style="color: #000000 !important;">
+            </div>
+            <span class="error-message" id="otp-error"></span>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Verify OTP</button>
+            <button class="btn-secondary" type="button" id="back-to-email">Back</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: Set New Password -->
+      <div class="forgot-password-step" id="step-password">
+        <h2>Set New Password</h2>
+        <p>Enter your new password</p>
+        <form id="new-password-form" class="login-form">
+          <div class="form-group">
+            <label for="new-password" class="form-label">New Password</label>
+            <input class="form-input" id="new-password" type="password" placeholder="Enter new password" required
+              style="color: #000000 !important;">
+            <span class="error-message" id="new-password-error"></span>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <input class="form-input" id="confirm-password" type="password" placeholder="Confirm new password" required
+              style="color: #000000 !important;">
+            <span class="error-message" id="confirm-password-error"></span>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Change Password</button>
+            <button class="btn-secondary" type="button" id="back-to-otp">Back</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div class="forgot-password-step" id="step-success">
+        <div style="text-align: center;">
+          <div class="login-success-icon" style="margin: 0 auto 20px;"></div>
+          <h2 style="color: #1e3c72; margin-bottom: 12px;">Password Changed!</h2>
+          <p style="color: #5a6c7d; margin-bottom: 24px;">Your password has been successfully changed</p>
+          <button class="btn-primary" type="button" id="go-to-login">Back to Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Account Modal -->
+  <div class="forgot-password-modal" id="create-account-modal">
+    <div class="forgot-password-card">
+      <!-- Step 1: Create Account Form -->
+      <div class="forgot-password-step active" id="signup-step-form">
+        <h2>Create Account</h2>
+        <p>Enter your details to create your AeroMart account</p>
+        <form id="signup-form" class="login-form">
+          <div class="form-group">
+            <label for="signup-email" class="form-label">Email or mobile phone number</label>
+            <input class="form-input" id="signup-email" type="text" placeholder="Enter email/phone number" required
+              autocomplete="username" style="color: #000000 !important;">
+            <span class="error-message" id="signup-email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-password" class="form-label">Password</label>
+            <input class="form-input" id="signup-password" type="password" placeholder="Enter your password" required
+              autocomplete="new-password" style="color: #000000 !important;">
+            <span class="error-message" id="signup-password-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+            <input class="form-input" id="signup-confirm-password" type="password" placeholder="Confirm your password"
+              required autocomplete="new-password" style="color: #000000 !important;">
+            <span class="error-message" id="signup-confirm-password-error"></span>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-primary" type="submit">Create Account</button>
+            <button class="btn-secondary" type="button" id="cancel-signup">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2: Success -->
+      <div class="forgot-password-step" id="signup-step-success">
+        <div style="text-align: center;">
+          <div class="login-success-icon" style="margin: 0 auto 20px;"></div>
+          <h2 style="color: #1e3c72; margin-bottom: 12px;">Account Created!</h2>
+          <p style="color: #5a6c7d; margin-bottom: 24px;">Your AeroMart account has been successfully created</p>
+          <button class="btn-primary" type="button" id="go-to-login-from-signup">Continue to Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    // Role Selection Functionality
+    let selectedRole = null;
+
+    const roleSelectionScreen = document.getElementById("role-selection-screen");
+    const loginFormContainer = document.getElementById("login-form-container");
+    const roleOptions = document.querySelectorAll(".role-option");
+    const continueBtn = document.getElementById("continue-role-btn");
+
+    roleOptions.forEach(option => {
+      option.addEventListener("click", function () {
+        // Remove selected class from all options
+        roleOptions.forEach(opt => opt.classList.remove("selected"));
+        // Add selected class to clicked option
+        this.classList.add("selected");
+        selectedRole = this.dataset.role;
+        // Enable continue button
+        continueBtn.disabled = false;
+        continueBtn.style.opacity = "1";
+        continueBtn.style.cursor = "pointer";
+      });
+    });
+
+    continueBtn.addEventListener("click", function () {
+      if (selectedRole) {
+        // Show loading overlay
+        const loadingOverlay = document.getElementById("role-loading-overlay");
+        const loadingText = document.getElementById("role-loading-text");
+        const roleName = selectedRole === "buyer" ? "Buyer" : "Seller";
+        loadingText.textContent = `Loading ${roleName} interface...`;
+        loadingOverlay.classList.add("show");
+
+        // Hide role selection screen
+        setTimeout(() => {
+          roleSelectionScreen.classList.add("hidden");
+
+          // Show appropriate interface based on role
+          if (selectedRole === "seller") {
+            document.getElementById("seller-interface").classList.remove("hidden");
+          } else {
+            loginFormContainer.classList.remove("hidden");
+          }
+
+          // Hide loading overlay
+          setTimeout(() => {
+            loadingOverlay.classList.remove("show");
+          }, 500);
+
+          // Store selected role
+          localStorage.setItem("selectedRole", selectedRole);
+        }, 1500);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginForm = document.getElementById("login-form");
+      const emailInput = document.getElementById("email");
+      const emailError = document.getElementById("email-error");
+      const messageOverlay = document.getElementById("login-message-overlay");
+      const messageText = document.getElementById("login-message-text");
+      const messageContent = document.getElementById("login-message-content");
+
+      // Function to validate email or mobile number
+      function validateEmailOrMobile(value) {
+        if (!value || value.trim() === '') {
+          return { valid: false, message: 'Please enter your email or mobile number' };
+        }
+
+        // Check if it's an email first (emails can have @ anywhere)
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailPattern.test(value)) {
+          return { valid: true, message: '' };
+        }
+
+        // If it contains @ but is not a valid email
+        if (value.includes('@')) {
+          return { valid: false, message: 'Please enter a valid email address (e.g., name@example.com)' };
+        }
+
+        // Remove spaces and common formatting characters for phone validation
+        const cleaned = value.replace(/[\s\-\(\)]/g, '');
+
+        // Check if it's all digits (phone number)
+        if (/^\d+$/.test(cleaned)) {
+          // Limit phone numbers to 11 digits maximum
+          if (cleaned.length > 11) {
+            return { valid: false, message: 'Phone number cannot exceed 11 digits' };
+          }
+          if (cleaned.length < 10) {
+            return { valid: false, message: 'Please enter a valid mobile number (10-11 digits)' };
+          }
+          return { valid: true, message: '' };
+        }
+
+        // Check if it starts with + and has digits (international format)
+        if (/^\+?\d+$/.test(cleaned)) {
+          const digitsOnly = cleaned.replace(/^\+/, '');
+          if (digitsOnly.length > 11) {
+            return { valid: false, message: 'Phone number cannot exceed 11 digits' };
+          }
+          if (digitsOnly.length < 10) {
+            return { valid: false, message: 'Please enter a valid mobile number (10-11 digits)' };
+          }
+          return { valid: true, message: '' };
+        }
+
+        // Default error
+        return { valid: false, message: 'Please enter a valid email or mobile number' };
+      }
+
+      // Function to restrict phone number input to 11 digits max
+      function restrictPhoneInput(input) {
+        input.addEventListener('input', function (e) {
+          const value = this.value;
+
+          // If it contains @, it's an email - allow any length
+          if (value.includes('@')) {
+            return;
+          }
+
+          // Remove non-digits to count digits only
+          const digitsOnly = value.replace(/\D/g, '');
+
+          // If more than 11 digits, truncate
+          if (digitsOnly.length > 11) {
+            // Keep the original format but limit digits
+            let formatted = value;
+            let digitCount = 0;
+            let result = '';
+
+            for (let i = 0; i < formatted.length; i++) {
+              if (/\d/.test(formatted[i])) {
+                if (digitCount < 11) {
+                  result += formatted[i];
+                  digitCount++;
+                }
+              } else {
+                result += formatted[i];
+              }
+            }
+
+            this.value = result;
+
+            // Trigger validation
+            const event = new Event('input', { bubbles: true });
+            this.dispatchEvent(event);
+          }
+        });
+      }
+
+      // Apply phone number restriction to login email input
+      restrictPhoneInput(emailInput);
+
+      // Real-time validation on input
+      emailInput.addEventListener('input', function () {
+        const value = this.value;
+        const validation = validateEmailOrMobile(value);
+
+        if (validation.valid) {
+          this.classList.remove('error');
+          emailError.classList.remove('show');
+          emailError.textContent = '';
+        } else if (value.trim() !== '') {
+          this.classList.add('error');
+          emailError.classList.add('show');
+          emailError.textContent = validation.message;
+        } else {
+          this.classList.remove('error');
+          emailError.classList.remove('show');
+          emailError.textContent = '';
+        }
+      });
+
+      // Clear error on focus
+      emailInput.addEventListener('focus', function () {
+        this.classList.remove('error');
+        emailError.classList.remove('show');
+      });
+
+      // Password validation
+      const passwordInput = document.getElementById('password');
+      const passwordError = document.getElementById('password-error');
+
+      passwordInput.addEventListener('input', function () {
+        const password = this.value;
+
+        if (password && password.length < 6) {
+          this.classList.add('error');
+          passwordError.classList.add('show');
+          passwordError.textContent = 'Password must be at least 6 characters';
+        } else if (password.length >= 6) {
+          this.classList.remove('error');
+          passwordError.classList.remove('show');
+          passwordError.textContent = '';
+        } else {
+          this.classList.remove('error');
+          passwordError.classList.remove('show');
+          passwordError.textContent = '';
+        }
+      });
+
+      passwordInput.addEventListener('focus', function () {
+        // Don't clear error on focus, keep showing if password is invalid
+      });
+
+      loginForm.addEventListener("submit", e => {
+        e.preventDefault();
+
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value;
+        const validation = validateEmailOrMobile(emailValue);
+
+        if (!validation.valid) {
+          emailInput.classList.add('error');
+          emailError.classList.add('show');
+          emailError.textContent = validation.message;
+          emailInput.focus();
+          return;
+        }
+
+        // Validate password
+        if (!passwordValue) {
+          passwordInput.classList.add('error');
+          passwordError.classList.add('show');
+          passwordError.textContent = 'Please enter your password';
+          passwordInput.focus();
+          return;
+        }
+
+        if (passwordValue.length < 6) {
+          passwordInput.classList.add('error');
+          passwordError.classList.add('show');
+          passwordError.textContent = 'Password must be at least 6 characters';
+          passwordInput.focus();
+          return;
+        }
+
+        // Validate credentials
+        const cleanedEmail = emailValue.replace(/[\s\-\(\)]/g, '');
+        const validEmail = 'hassanmeer191@gmail.com';
+        const validPhone = '03175637194';
+        const validPassword = 'hassanmir';
+
+        let isValidCredentials = false;
+
+        // Check hardcoded credentials first
+        // Check if email matches
+        if (emailValue.toLowerCase() === validEmail.toLowerCase() && passwordValue === validPassword) {
+          isValidCredentials = true;
+        }
+        // Check if phone matches (remove formatting)
+        else if (cleanedEmail === validPhone && passwordValue === validPassword) {
+          isValidCredentials = true;
+        }
+        // Check stored accounts from localStorage
+        else {
+          const accounts = JSON.parse(localStorage.getItem('aeromart_accounts') || '[]');
+          const matchingAccount = accounts.find(acc => {
+            const emailMatch = acc.email === emailValue.toLowerCase() && acc.password === passwordValue;
+            const phoneMatch = acc.phone === cleanedEmail && acc.password === passwordValue;
+            return emailMatch || phoneMatch;
+          });
+
+          if (matchingAccount) {
+            isValidCredentials = true;
+          }
+        }
+
+        if (!isValidCredentials) {
+          passwordInput.classList.add('error');
+          passwordError.classList.add('show');
+          passwordError.textContent = 'Invalid email/phone number or password';
+          emailInput.classList.add('error');
+          emailError.classList.add('show');
+          emailError.textContent = 'Invalid credentials. Please check your email/phone and password.';
+          return;
+        }
+
+        // Clear any errors
+        emailInput.classList.remove('error');
+        emailError.classList.remove('show');
+        passwordInput.classList.remove('error');
+        passwordError.classList.remove('show');
+
+        // Show overlay with "Logging in..." message
+        messageOverlay.classList.add("show");
+        messageText.textContent = "Logging in...";
+        messageContent.className = "login-message-content";
+        messageContent.innerHTML = '<span class="login-spinner"></span><p class="login-message-text">Logging in...</p>';
+
+        // After 1.5 seconds, show success message
+        setTimeout(() => {
+          messageContent.className = "login-message-content success";
+          messageContent.innerHTML = '<div class="login-success-icon"></div><p class="login-message-text">Logged in successfully!</p>';
+
+          // Redirect after showing success message
+          setTimeout(() => {
+            location.href = "index.html";
+          }, 1500);
+        }, 1500);
+      });
+
+      // Seller Login Form
+      const sellerLoginForm = document.getElementById("seller-login-form");
+      const sellerEmailInput = document.getElementById("seller-email");
+      const sellerPasswordInput = document.getElementById("seller-password");
+      const sellerEmailError = document.getElementById("seller-email-error");
+      const sellerPasswordError = document.getElementById("seller-password-error");
+
+      if (sellerLoginForm) {
+        // Apply phone number restriction
+        restrictPhoneInput(sellerEmailInput);
+
+        // Seller email/phone validation
+        sellerEmailInput.addEventListener('input', function () {
+          const value = this.value;
+          const validation = validateEmailOrMobile(value);
+
+          if (validation.valid) {
+            this.classList.remove('error');
+            sellerEmailError.classList.remove('show');
+            sellerEmailError.textContent = '';
+          } else if (value.trim() !== '') {
+            this.classList.add('error');
+            sellerEmailError.classList.add('show');
+            sellerEmailError.textContent = validation.message;
+          } else {
+            this.classList.remove('error');
+            sellerEmailError.classList.remove('show');
+            sellerEmailError.textContent = '';
+          }
+        });
+
+        // Seller password validation
+        sellerPasswordInput.addEventListener('input', function () {
+          const password = this.value;
+
+          if (password && password.length < 6) {
+            this.classList.add('error');
+            sellerPasswordError.classList.add('show');
+            sellerPasswordError.textContent = 'Password must be at least 6 characters';
+          } else if (password.length >= 6) {
+            this.classList.remove('error');
+            sellerPasswordError.classList.remove('show');
+            sellerPasswordError.textContent = '';
+          } else {
+            this.classList.remove('error');
+            sellerPasswordError.classList.remove('show');
+            sellerPasswordError.textContent = '';
+          }
+        });
+
+        // Seller form submission
+        sellerLoginForm.addEventListener("submit", e => {
+          e.preventDefault();
+
+          const emailValue = sellerEmailInput.value.trim();
+          const passwordValue = sellerPasswordInput.value;
+          const validation = validateEmailOrMobile(emailValue);
+
+          if (!validation.valid) {
+            sellerEmailInput.classList.add('error');
+            sellerEmailError.classList.add('show');
+            sellerEmailError.textContent = validation.message;
+            sellerEmailInput.focus();
+            return;
+          }
+
+          if (!passwordValue) {
+            sellerPasswordInput.classList.add('error');
+            sellerPasswordError.classList.add('show');
+            sellerPasswordError.textContent = 'Please enter your password';
+            sellerPasswordInput.focus();
+            return;
+          }
+
+          if (passwordValue.length < 6) {
+            sellerPasswordInput.classList.add('error');
+            sellerPasswordError.classList.add('show');
+            sellerPasswordError.textContent = 'Password must be at least 6 characters';
+            sellerPasswordInput.focus();
+            return;
+          }
+
+          // Validate seller credentials (same validation as buyer for now)
+          const cleanedEmail = emailValue.replace(/[\s\-\(\)]/g, '');
+          const validEmail = 'hassanmeer191@gmail.com';
+          const validPhone = '03175637194';
+          const validPassword = 'hassanmir';
+
+          let isValidCredentials = false;
+
+          if (emailValue.toLowerCase() === validEmail.toLowerCase() && passwordValue === validPassword) {
+            isValidCredentials = true;
+          } else if (cleanedEmail === validPhone && passwordValue === validPassword) {
+            isValidCredentials = true;
+          } else {
+            const accounts = JSON.parse(localStorage.getItem('aeromart_accounts') || '[]');
+            const matchingAccount = accounts.find(acc => {
+              const emailMatch = acc.email === emailValue.toLowerCase() && acc.password === passwordValue;
+              const phoneMatch = acc.phone === cleanedEmail && acc.password === passwordValue;
+              return emailMatch || phoneMatch;
+            });
+
+            if (matchingAccount) {
+              isValidCredentials = true;
+            }
+          }
+
+          if (!isValidCredentials) {
+            sellerPasswordInput.classList.add('error');
+            sellerPasswordError.classList.add('show');
+            sellerPasswordError.textContent = 'Invalid email/phone number or password';
+            sellerEmailInput.classList.add('error');
+            sellerEmailError.classList.add('show');
+            sellerEmailError.textContent = 'Invalid credentials. Please check your email/phone and password.';
+            return;
+          }
+
+          // Clear errors
+          sellerEmailInput.classList.remove('error');
+          sellerEmailError.classList.remove('show');
+          sellerPasswordInput.classList.remove('error');
+          sellerPasswordError.classList.remove('show');
+
+          // Show loading overlay
+          messageOverlay.classList.add("show");
+          messageText.textContent = "Logging in as Seller...";
+          messageContent.className = "login-message-content";
+          messageContent.innerHTML = '<span class="login-spinner"></span><p class="login-message-text">Logging in as Seller...</p>';
+
+          // After 1.5 seconds, show success message
+          setTimeout(() => {
+            messageContent.className = "login-message-content success";
+            messageContent.innerHTML = '<div class="login-success-icon"></div><p class="login-message-text">Logged in successfully as Seller!</p>';
+
+            // Redirect to seller dashboard
+            setTimeout(() => {
+              location.href = "seller.html";
+            }, 1500);
+          }, 1500);
+        });
+      }
+
+      // Back to role selection buttons
+      function goBackToRoleSelection() {
+        // Show loading
+        const loadingOverlay = document.getElementById("role-loading-overlay");
+        const loadingText = document.getElementById("role-loading-text");
+        loadingText.textContent = "Loading...";
+        loadingOverlay.classList.add("show");
+
+        setTimeout(() => {
+          // Hide seller interface
+          document.getElementById("seller-interface").classList.add("hidden");
+          // Hide login form if visible
+          loginFormContainer.classList.add("hidden");
+          // Show role selection
+          roleSelectionScreen.classList.remove("hidden");
+          // Reset selection
+          selectedRole = null;
+          roleOptions.forEach(opt => opt.classList.remove("selected"));
+          continueBtn.disabled = true;
+          continueBtn.style.opacity = "0.5";
+          continueBtn.style.cursor = "not-allowed";
+
+          // Hide loading
+          setTimeout(() => {
+            loadingOverlay.classList.remove("show");
+          }, 500);
+        }, 800);
+      }
+
+      const backToRoleBtn = document.getElementById("back-to-role-selection");
+      if (backToRoleBtn) {
+        backToRoleBtn.addEventListener("click", goBackToRoleSelection);
+      }
+
+      const backToRoleBuyerBtn = document.getElementById("back-to-role-buyer");
+      if (backToRoleBuyerBtn) {
+        backToRoleBuyerBtn.addEventListener("click", goBackToRoleSelection);
+      }
+
+      // Forgot Password Functionality
+      const forgotPasswordModal = document.getElementById('forgot-password-modal');
+      const forgotEmailForm = document.getElementById('forgot-email-form');
+      const otpForm = document.getElementById('otp-form');
+      const newPasswordForm = document.getElementById('new-password-form');
+      const otpInputs = document.querySelectorAll('.otp-input');
+      let userEmail = '';
+
+      // Function to open forgot password modal
+      function openForgotPasswordModal(e) {
+        if (e) e.preventDefault();
+        if (forgotPasswordModal) {
+          forgotPasswordModal.classList.add('show');
+          showStep('step-email');
+        }
+      }
+
+      // Buyer forgot password link
+      const buyerForgotPasswordLink = document.getElementById('buyer-forgot-password');
+      if (buyerForgotPasswordLink) {
+        buyerForgotPasswordLink.addEventListener('click', openForgotPasswordModal);
+      }
+
+      // Seller forgot password link
+      const sellerForgotPasswordLink = document.getElementById('seller-forgot-password');
+      if (sellerForgotPasswordLink) {
+        sellerForgotPasswordLink.addEventListener('click', openForgotPasswordModal);
+      }
+
+      // Also attach to any forgot password links that might be dynamically added
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.forgot-password') && !e.target.closest('#buyer-forgot-password') && !e.target.closest('#seller-forgot-password')) {
+          openForgotPasswordModal(e);
+        }
+      });
+
+      // Close modal
+      const cancelForgotBtn = document.getElementById('cancel-forgot');
+      if (cancelForgotBtn) {
+        cancelForgotBtn.addEventListener('click', () => {
+          if (forgotPasswordModal) {
+            forgotPasswordModal.classList.remove('show');
+            resetForgotPassword();
+          }
+        });
+      }
+
+      // Close modal when clicking outside
+      if (forgotPasswordModal) {
+        forgotPasswordModal.addEventListener('click', (e) => {
+          if (e.target === forgotPasswordModal) {
+            forgotPasswordModal.classList.remove('show');
+            resetForgotPassword();
+          }
+        });
+      }
+
+      // Function to show specific step
+      function showStep(stepId) {
+        document.querySelectorAll('.forgot-password-step').forEach(step => {
+          step.classList.remove('active');
+        });
+        document.getElementById(stepId).classList.add('active');
+      }
+
+      // Function to reset forgot password flow
+      function resetForgotPassword() {
+        if (forgotEmailForm) forgotEmailForm.reset();
+        if (otpForm) otpForm.reset();
+        if (newPasswordForm) newPasswordForm.reset();
+        document.querySelectorAll('.error-message').forEach(err => {
+          err.classList.remove('show');
+          err.textContent = '';
+        });
+        if (otpInputs) {
+          otpInputs.forEach(input => {
+            input.value = '';
+          });
+        }
+        userEmail = '';
+        showStep('step-email');
+      }
+
+      // OTP Input handling - auto-focus next input
+      otpInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+          }
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const paste = e.clipboardData.getData('text').trim();
+          if (/^\d{6}$/.test(paste)) {
+            paste.split('').forEach((char, i) => {
+              if (otpInputs[i]) {
+                otpInputs[i].value = char;
+              }
+            });
+            otpInputs[5].focus();
+          }
+        });
+      });
+
+      // Forgot password email/phone validation (same as login)
+      const forgotEmailInput = document.getElementById('forgot-email');
+      const forgotEmailError = document.getElementById('forgot-email-error');
+
+      // Apply phone number restriction to forgot password input
+      restrictPhoneInput(forgotEmailInput);
+
+      forgotEmailInput.addEventListener('input', function () {
+        const value = this.value;
+        const validation = validateEmailOrMobile(value);
+
+        if (validation.valid) {
+          this.classList.remove('error');
+          forgotEmailError.classList.remove('show');
+          forgotEmailError.textContent = '';
+        } else if (value.trim() !== '') {
+          this.classList.add('error');
+          forgotEmailError.classList.add('show');
+          forgotEmailError.textContent = validation.message;
+        } else {
+          this.classList.remove('error');
+          forgotEmailError.classList.remove('show');
+          forgotEmailError.textContent = '';
+        }
+      });
+
+      forgotEmailInput.addEventListener('focus', function () {
+        this.classList.remove('error');
+        forgotEmailError.classList.remove('show');
+      });
+
+      // Step 1: Submit email/phone
+      forgotEmailForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailOrPhone = forgotEmailInput.value.trim();
+        const validation = validateEmailOrMobile(emailOrPhone);
+
+        if (!validation.valid) {
+          forgotEmailInput.classList.add('error');
+          forgotEmailError.classList.add('show');
+          forgotEmailError.textContent = validation.message;
+          forgotEmailInput.focus();
+          return;
+        }
+
+        userEmail = emailOrPhone;
+        forgotEmailInput.classList.remove('error');
+        forgotEmailError.classList.remove('show');
+
+        // Update OTP display with entered email/phone
+        document.getElementById('otp-email-display').textContent = emailOrPhone;
+
+        // Show OTP sent message
+        document.getElementById('otp-sent-message').style.display = 'block';
+        setTimeout(() => {
+          showStep('step-otp');
+          otpInputs[0].focus();
+        }, 500);
+      });
+
+      // Back to email step
+      document.getElementById('back-to-email').addEventListener('click', () => {
+        showStep('step-email');
+        document.getElementById('otp-sent-message').style.display = 'none';
+      });
+
+      // Step 2: Verify OTP
+      otpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const otp = Array.from(otpInputs).map(input => input.value).join('');
+        const otpError = document.getElementById('otp-error');
+
+        if (otp.length !== 6) {
+          otpError.textContent = 'Please enter the complete 6-digit OTP';
+          otpError.classList.add('show');
+          return;
+        }
+
+        if (!/^\d{6}$/.test(otp)) {
+          otpError.textContent = 'OTP must contain only numbers';
+          otpError.classList.add('show');
+          return;
+        }
+
+        // In a real app, verify OTP with server
+        // For demo, accept any 6-digit OTP
+        otpError.classList.remove('show');
+        showStep('step-password');
+        document.getElementById('new-password').focus();
+      });
+
+      // Back to OTP step
+      document.getElementById('back-to-otp').addEventListener('click', () => {
+        showStep('step-otp');
+      });
+
+      // Real-time password validation
+      const newPasswordInput = document.getElementById('new-password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const newPasswordError = document.getElementById('new-password-error');
+      const confirmPasswordError = document.getElementById('confirm-password-error');
+
+      function validatePasswords() {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        // Clear previous errors
+        newPasswordError.classList.remove('show');
+        confirmPasswordError.classList.remove('show');
+
+        // Validate new password
+        if (newPassword && newPassword.length < 6) {
+          newPasswordError.textContent = 'Password must be at least 6 characters';
+          newPasswordError.classList.add('show');
+          newPasswordInput.classList.add('error');
+        } else if (newPassword) {
+          newPasswordInput.classList.remove('error');
+        }
+
+        // Validate confirm password
+        if (confirmPassword && newPassword !== confirmPassword) {
+          confirmPasswordError.textContent = 'Passwords do not match. Please enter the same password.';
+          confirmPasswordError.classList.add('show');
+          confirmPasswordInput.classList.add('error');
+        } else if (confirmPassword && newPassword === confirmPassword) {
+          confirmPasswordInput.classList.remove('error');
+        }
+      }
+
+      newPasswordInput.addEventListener('input', validatePasswords);
+      confirmPasswordInput.addEventListener('input', validatePasswords);
+
+      // Step 3: Set new password
+      newPasswordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newPassword = newPasswordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
+
+        let hasError = false;
+
+        // Clear previous errors
+        newPasswordError.classList.remove('show');
+        confirmPasswordError.classList.remove('show');
+        newPasswordInput.classList.remove('error');
+        confirmPasswordInput.classList.remove('error');
+
+        // Validate new password
+        if (!newPassword) {
+          newPasswordError.textContent = 'Please enter a new password';
+          newPasswordError.classList.add('show');
+          newPasswordInput.classList.add('error');
+          hasError = true;
+        } else if (newPassword.length < 6) {
+          newPasswordError.textContent = 'Password must be at least 6 characters';
+          newPasswordError.classList.add('show');
+          newPasswordInput.classList.add('error');
+          hasError = true;
+        }
+
+        // Validate confirm password
+        if (!confirmPassword) {
+          confirmPasswordError.textContent = 'Please confirm your password';
+          confirmPasswordError.classList.add('show');
+          confirmPasswordInput.classList.add('error');
+          hasError = true;
+        } else if (newPassword !== confirmPassword) {
+          confirmPasswordError.textContent = 'Passwords do not match. Please enter the same password in both fields.';
+          confirmPasswordError.classList.add('show');
+          confirmPasswordInput.classList.add('error');
+          hasError = true;
+        }
+
+        if (hasError) {
+          return;
+        }
+
+        // In a real app, send new password to server
+        // For demo, show success
+        showStep('step-success');
+      });
+
+      // Step 4: Go back to login
+      document.getElementById('go-to-login').addEventListener('click', () => {
+        forgotPasswordModal.classList.remove('show');
+        resetForgotPassword();
+        // Optionally scroll to login form
+        document.getElementById('login-form').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Create Account Functionality
+      const createAccountBtn = document.getElementById('create-account-btn');
+      const createAccountModal = document.getElementById('create-account-modal');
+      const signupForm = document.getElementById('signup-form');
+      const signupEmailInput = document.getElementById('signup-email');
+      const signupPasswordInput = document.getElementById('signup-password');
+      const signupConfirmPasswordInput = document.getElementById('signup-confirm-password');
+      const signupEmailError = document.getElementById('signup-email-error');
+      const signupPasswordError = document.getElementById('signup-password-error');
+      const signupConfirmPasswordError = document.getElementById('signup-confirm-password-error');
+
+      // Function to show signup step
+      function showSignupStep(stepId) {
+        document.querySelectorAll('.forgot-password-step').forEach(step => {
+          if (step.id.startsWith('signup-')) {
+            step.classList.remove('active');
+          }
+        });
+        document.getElementById(stepId).classList.add('active');
+      }
+
+      // Function to reset signup form
+      function resetSignupForm() {
+        signupForm.reset();
+        signupEmailError.classList.remove('show');
+        signupPasswordError.classList.remove('show');
+        signupConfirmPasswordError.classList.remove('show');
+        signupEmailInput.classList.remove('error');
+        signupPasswordInput.classList.remove('error');
+        signupConfirmPasswordInput.classList.remove('error');
+        showSignupStep('signup-step-form');
+      }
+
+      // Open create account modal (for buyer)
+      if (createAccountBtn) {
+        createAccountBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          signupFromInterface = 'buyer'; // Track that signup is from buyer interface
+          createAccountModal.classList.add('show');
+          resetSignupForm();
+        });
+      }
+
+      // Seller create account button
+      const sellerCreateAccountBtn = document.getElementById('seller-create-account-btn');
+      if (sellerCreateAccountBtn) {
+        sellerCreateAccountBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          signupFromInterface = 'seller'; // Track that signup is from seller interface
+          createAccountModal.classList.add('show');
+          resetSignupForm();
+        });
+      }
+
+      // Close signup modal
+      const cancelSignupBtn = document.getElementById('cancel-signup');
+      if (cancelSignupBtn) {
+        cancelSignupBtn.addEventListener('click', () => {
+          createAccountModal.classList.remove('show');
+          resetSignupForm();
+        });
+      }
+
+      // Apply phone number restriction to signup email input
+      restrictPhoneInput(signupEmailInput);
+
+      // Signup email/phone validation (same as login)
+      signupEmailInput.addEventListener('input', function () {
+        const value = this.value;
+        const validation = validateEmailOrMobile(value);
+
+        if (validation.valid) {
+          this.classList.remove('error');
+          signupEmailError.classList.remove('show');
+          signupEmailError.textContent = '';
+        } else if (value.trim() !== '') {
+          this.classList.add('error');
+          signupEmailError.classList.add('show');
+          signupEmailError.textContent = validation.message;
+        } else {
+          this.classList.remove('error');
+          signupEmailError.classList.remove('show');
+          signupEmailError.textContent = '';
+        }
+      });
+
+      signupEmailInput.addEventListener('focus', function () {
+        this.classList.remove('error');
+        signupEmailError.classList.remove('show');
+      });
+
+      // Signup password validation
+      signupPasswordInput.addEventListener('input', function () {
+        const password = this.value;
+
+        if (password && password.length < 6) {
+          this.classList.add('error');
+          signupPasswordError.classList.add('show');
+          signupPasswordError.textContent = 'Password must be at least 6 characters';
+        } else if (password.length >= 6) {
+          this.classList.remove('error');
+          signupPasswordError.classList.remove('show');
+          signupPasswordError.textContent = '';
+        } else {
+          this.classList.remove('error');
+          signupPasswordError.classList.remove('show');
+          signupPasswordError.textContent = '';
+        }
+      });
+
+      // Signup confirm password validation
+      function validateSignupPasswords() {
+        const password = signupPasswordInput.value;
+        const confirmPassword = signupConfirmPasswordInput.value;
+
+        signupConfirmPasswordError.classList.remove('show');
+        signupConfirmPasswordInput.classList.remove('error');
+
+        if (confirmPassword && password !== confirmPassword) {
+          signupConfirmPasswordError.textContent = 'Passwords do not match. Please enter the same password.';
+          signupConfirmPasswordError.classList.add('show');
+          signupConfirmPasswordInput.classList.add('error');
+        } else if (confirmPassword && password === confirmPassword) {
+          signupConfirmPasswordInput.classList.remove('error');
+        }
+      }
+
+      signupPasswordInput.addEventListener('input', validateSignupPasswords);
+      signupConfirmPasswordInput.addEventListener('input', validateSignupPasswords);
+
+      // Signup form submission
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const emailValue = signupEmailInput.value.trim();
+        const passwordValue = signupPasswordInput.value;
+        const confirmPasswordValue = signupConfirmPasswordInput.value;
+
+        let hasError = false;
+
+        // Clear previous errors
+        signupEmailError.classList.remove('show');
+        signupPasswordError.classList.remove('show');
+        signupConfirmPasswordError.classList.remove('show');
+        signupEmailInput.classList.remove('error');
+        signupPasswordInput.classList.remove('error');
+        signupConfirmPasswordInput.classList.remove('error');
+
+        // Validate email/phone
+        const emailValidation = validateEmailOrMobile(emailValue);
+        if (!emailValidation.valid) {
+          signupEmailInput.classList.add('error');
+          signupEmailError.classList.add('show');
+          signupEmailError.textContent = emailValidation.message;
+          hasError = true;
+        }
+
+        // Validate password
+        if (!passwordValue) {
+          signupPasswordInput.classList.add('error');
+          signupPasswordError.classList.add('show');
+          signupPasswordError.textContent = 'Please enter a password';
+          hasError = true;
+        } else if (passwordValue.length < 6) {
+          signupPasswordInput.classList.add('error');
+          signupPasswordError.classList.add('show');
+          signupPasswordError.textContent = 'Password must be at least 6 characters';
+          hasError = true;
+        }
+
+        // Validate confirm password
+        if (!confirmPasswordValue) {
+          signupConfirmPasswordInput.classList.add('error');
+          signupConfirmPasswordError.classList.add('show');
+          signupConfirmPasswordError.textContent = 'Please confirm your password';
+          hasError = true;
+        } else if (passwordValue !== confirmPasswordValue) {
+          signupConfirmPasswordInput.classList.add('error');
+          signupConfirmPasswordError.classList.add('show');
+          signupConfirmPasswordError.textContent = 'Passwords do not match. Please enter the same password in both fields.';
+          hasError = true;
+        }
+
+        if (hasError) {
+          return;
+        }
+
+        // Store new account credentials in localStorage
+        const cleanedEmail = emailValue.replace(/[\s\-\(\)]/g, '');
+        const newAccount = {
+          email: emailValue.toLowerCase(),
+          phone: cleanedEmail,
+          password: passwordValue
+        };
+
+        // Get existing accounts from localStorage
+        let accounts = JSON.parse(localStorage.getItem('aeromart_accounts') || '[]');
+
+        // Check if account already exists
+        const accountExists = accounts.some(acc =>
+          acc.email === newAccount.email || acc.phone === newAccount.phone
+        );
+
+        if (accountExists) {
+          signupEmailInput.classList.add('error');
+          signupEmailError.classList.add('show');
+          signupEmailError.textContent = 'An account with this email/phone already exists';
+          return;
+        }
+
+        // Add new account
+        accounts.push(newAccount);
+        localStorage.setItem('aeromart_accounts', JSON.stringify(accounts));
+
+        // In a real app, send signup data to server
+        // For demo, show success
+        showSignupStep('signup-step-success');
+      });
+
+      // Track which interface the user was on when creating account
+      let signupFromInterface = null; // 'seller' or 'buyer'
+
+      // Go to login from signup success
+      const goToLoginFromSignupBtn = document.getElementById('go-to-login-from-signup');
+      if (goToLoginFromSignupBtn) {
+        goToLoginFromSignupBtn.addEventListener('click', () => {
+          createAccountModal.classList.remove('show');
+          resetSignupForm();
+
+          // If user created account from seller interface, return to seller dashboard
+          if (signupFromInterface === 'seller') {
+            // Hide buyer login form and role selection if visible
+            loginFormContainer.classList.add('hidden');
+            roleSelectionScreen.classList.add('hidden');
+            // Show seller interface
+            document.getElementById('seller-interface').classList.remove('hidden');
+            // Clear the signupFromInterface
+            signupFromInterface = null;
+          } else {
+            // If from buyer interface, show buyer login form
+            document.getElementById('seller-interface').classList.add('hidden');
+            roleSelectionScreen.classList.add('hidden');
+            loginFormContainer.classList.remove('hidden');
+            signupFromInterface = null;
+          }
+        });
+      }
+    });
+  </script>
+  <script src="keyboard-navigation.js"></script>
+</body>
+
+</html>
